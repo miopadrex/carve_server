@@ -1,0 +1,74 @@
+type CompleteEmailVerifyResponse {
+  ok: Boolean!
+  status: String!
+}
+
+type Mutation {
+  CompleteEmailVerify(key: String!): CompleteEmailVerifyResponse
+  EmailSignIn(email: String!, password: String!): EmailSignInResponse!
+  EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!
+  KaKaoLogin(id: String!, name: String, email: String, gender: String, avatar: String): KaKaoLoginResponse!
+  NaverLogin(id: String!, name: String, avatar: String, gender: String): NaverLoginResponse!
+  RequestEmailVerify: RequestEmailVerifyResponse
+}
+
+type EmailSignInResponse {
+  ok: Boolean!
+  status: String!
+  token: String
+}
+
+type EmailSignUpResponse {
+  ok: Boolean!
+  status: String!
+  token: String
+}
+
+type KaKaoLoginResponse {
+  ok: Boolean!
+  status: String
+  token: String
+}
+
+type NaverLoginResponse {
+  ok: Boolean!
+  status: String
+  token: String
+}
+
+type RequestEmailVerifyResponse {
+  ok: Boolean!
+  status: String
+}
+
+type User {
+  id: String!
+  name: String!
+  email: String!
+  password: String
+  phoneNumber: String!
+  kakaoId: String
+  kakaoPlusId: String
+  instaId: String
+  avatar: String
+  gender: String
+  age: Int
+  isTatooist: Boolean!
+  rule: String
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  user: User!
+}
+
+type Verification {
+  id: String!
+  target: String!
+  payload: String!
+  key: String!
+  verified: Boolean!
+  createdAt: String
+  updatedAt: String
+}

@@ -1,0 +1,21 @@
+type User {
+  id: String!
+  name: String!
+  email: String!
+  password: String
+  phoneNumber: String!
+  kakaoId: String
+  kakaoPlusId: String
+  instaId: String
+  avatar: String
+  gender: String
+  age: Int
+  isTatooist: Boolean!
+  rule: String
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  user: User!
+}

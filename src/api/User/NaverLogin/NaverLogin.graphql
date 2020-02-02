@@ -1,0 +1,14 @@
+type NaverLoginResponse {
+  ok: Boolean!
+  status: String
+  token: String
+}
+
+type Mutation {
+  NaverLogin(
+    id: String!
+    name: String
+    avatar: String
+    gender: String
+  ): NaverLoginResponse!
+}

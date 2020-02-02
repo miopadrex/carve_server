@@ -1,0 +1,7 @@
+type CompleteEmailVerifyResponse {
+  ok: Boolean!
+  status: String!
+}
+type Mutation {
+  CompleteEmailVerify(key: String!): CompleteEmailVerifyResponse
+}

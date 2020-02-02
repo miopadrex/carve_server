@@ -1,0 +1,37 @@
+type User {
+  id: ID! @id
+  name: String
+  email: String @unique
+  emailVerfied: Boolean @default(value: false)
+  password: String
+  phoneNumber: String @unique
+  kakaoId: String @unique
+  kakaoPlusId: String @unique
+  instaId: String @unique
+  naverId: String @unique
+  avatar: String @default(value: "miopadre.com")
+  gender: String
+  age: Int
+  isTatooist: Boolean! @default(value: false)
+  rule: Role! @default(value: USER)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Verification {
+  id: ID! @id
+  target: Target!
+  payload: String! @unique
+  key: String!
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+enum Target {
+  PHONE
+  EMAIL
+}
+enum Role {
+  ADMIN
+  USER
+}

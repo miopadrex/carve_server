@@ -1,0 +1,15 @@
+type KaKaoLoginResponse {
+  ok: Boolean!
+  status: String
+  token: String
+}
+
+type Mutation {
+  KaKaoLogin(
+    id: String!
+    name: String
+    email: String
+    gender: String
+    avatar: String
+  ): KaKaoLoginResponse!
+}
