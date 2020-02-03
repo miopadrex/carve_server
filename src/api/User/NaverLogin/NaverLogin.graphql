@@ -6,8 +6,9 @@ type NaverLoginResponse {
 
 type Mutation {
   NaverLogin(
-    id: String!
+    naverAuthId: String!
     name: String
+    email: String
     avatar: String
     gender: String
   ): NaverLoginResponse!

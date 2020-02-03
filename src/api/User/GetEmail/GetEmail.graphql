@@ -1,0 +1,8 @@
+type GetEmailResponse {
+  ok: Boolean
+  status: String
+  email: String
+}
+type Query {
+  GetEmail(phoneNumber: String): GetEmailResponse!
+}

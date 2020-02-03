@@ -12,23 +12,52 @@ const resolvers: Resolvers = {
       _,
       args: KaKaoLoginMutationArgs
     ): Promise<KaKaoLoginResponse> => {
-      const { id } = args;
+      const { email, kakaoAuthId, name, avatar, gender } = args;
+      const kakaoExtingUser = await prisma.user({ kakaoAuthId });
+      const exmail = await prisma.user({ email });
+      const oldAuth = await prisma.user({ email }).naverAuthId();
       try {
-        const extingUser = prisma.$exists.user({ id });
-        if (!extingUser) {
-          const newUser = await prisma.createUser({ ...args });
-          const token = createJwt(newUser.id);
-          return {
-            ok: true,
-            status: "카카오톡 로그인이 성공적으로 완료되었습니다",
-            token
-          };
+        if (kakaoExtingUser) {
+          if (oldAuth === kakaoAuthId || oldAuth === null) {
+            const token = createJwt(kakaoExtingUser.id);
+            await prisma.updateUser({
+              where: { kakaoAuthId },
+              data: { email, name, avatar, gender }
+            });
+            return {
+              ok: true,
+              status: "카카오 로그인이 성공적으로 완료되었습니다.",
+              token
+            };
+          } else {
+            return {
+              ok: false,
+              status:
+                "이메일로 가입된 계정이있습니다. 다른이메일을 사용하시거나 이메일 로그인을 이용하세요",
+              token: null
+            };
+          }
         } else {
-          return {
-            ok: false,
-            status: "이미 카카오 아이디로 가입하신 계정이 존재합니다.",
-            token: null
-          };
+          if (exmail) {
+            const token = createJwt(exmail.id);
+            await prisma.updateUser({
+              where: { email },
+              data: { name, avatar, gender, kakaoAuthId }
+            });
+            return {
+              ok: true,
+              status: "카카오 로그인이 성공적으로 완료되었습니다.",
+              token
+            };
+          } else {
+            const newUser = await prisma.createUser({ ...args });
+            const token = createJwt(newUser.id);
+            return {
+              ok: true,
+              status: "카카오 가입이 성공적으로 완료되었습니다",
+              token
+            };
+          }
         }
       } catch (error) {
         return {

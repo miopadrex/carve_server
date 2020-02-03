@@ -1,15 +1,31 @@
-type CompleteEmailVerifyResponse {
+type ChangePasswordResponse {
   ok: Boolean!
-  status: String!
+  status: String
+  token: String
 }
 
 type Mutation {
-  CompleteEmailVerify(key: String!): CompleteEmailVerifyResponse
+  ChangePassword(email: String, phoneNumber: String, password: String!): ChangePasswordResponse!
+  ChangePasswordConfirm(password: String): ChangePasswordConfirmResponse!
+  EditProfile(email: String!, name: String, phoneNumber: String!, kakaoPlusId: String!, instaId: String!, avatar: String, gender: String, age: Int): EditProfileResponse!
   EmailSignIn(email: String!, password: String!): EmailSignInResponse!
-  EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!
-  KaKaoLogin(id: String!, name: String, email: String, gender: String, avatar: String): KaKaoLoginResponse!
-  NaverLogin(id: String!, name: String, avatar: String, gender: String): NaverLoginResponse!
-  RequestEmailVerify: RequestEmailVerifyResponse
+  EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoPlusId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!
+  KaKaoLogin(kakaoAuthId: String!, name: String, email: String, gender: String, avatar: String): KaKaoLoginResponse!
+  NaverLogin(naverAuthId: String!, name: String, email: String, avatar: String, gender: String): NaverLoginResponse!
+  RequestLoginEmailVerify(email: String): RequestLoginEmailVerifyResponse!
+  RequestPasswordResetEmailVerify(email: String): RequestPasswordResetEmailVerifyResponse!
+  ResetEmailVerifyComplete(email: String, key: String): ResetEmailVerifyCompleteResponse
+  SignEmailVerifyComplete(key: String!): SignEmailVerifyCompleteResponse
+}
+
+type ChangePasswordConfirmResponse {
+  ok: Boolean!
+  status: String
+}
+
+type EditProfileResponse {
+  ok: Boolean!
+  status: String
 }
 
 type EmailSignInResponse {
@@ -24,6 +40,17 @@ type EmailSignUpResponse {
   token: String
 }
 
+type GetEmailResponse {
+  ok: Boolean
+  status: String
+  email: String
+}
+
+type Query {
+  GetEmail(phoneNumber: String): GetEmailResponse!
+  GetMyProfile: User!
+}
+
 type KaKaoLoginResponse {
   ok: Boolean!
   status: String
@@ -36,9 +63,25 @@ type NaverLoginResponse {
   token: String
 }
 
-type RequestEmailVerifyResponse {
+type RequestLoginEmailVerifyResponse {
   ok: Boolean!
   status: String
+}
+
+type RequestPasswordResetEmailVerifyResponse {
+  ok: Boolean
+  status: String
+}
+
+type ResetEmailVerifyCompleteResponse {
+  ok: Boolean
+  status: String
+  token: String
+}
+
+type SignEmailVerifyCompleteResponse {
+  ok: Boolean!
+  status: String!
 }
 
 type User {
@@ -47,8 +90,9 @@ type User {
   email: String!
   password: String
   phoneNumber: String!
-  kakaoId: String
+  kakaoAuthId: String
   kakaoPlusId: String
+  naverAuthId: String
   instaId: String
   avatar: String
   gender: String
@@ -57,10 +101,6 @@ type User {
   rule: String
   createdAt: String
   updatedAt: String
-}
-
-type Query {
-  user: User!
 }
 
 type Verification {

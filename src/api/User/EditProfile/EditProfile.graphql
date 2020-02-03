@@ -1,0 +1,16 @@
+type EditProfileResponse {
+  ok: Boolean!
+  status: String
+}
+type Mutation {
+  EditProfile(
+    email: String!
+    name: String
+    phoneNumber: String!
+    kakaoPlusId: String!
+    instaId: String!
+    avatar: String
+    gender: String
+    age: Int
+  ): EditProfileResponse!
+}

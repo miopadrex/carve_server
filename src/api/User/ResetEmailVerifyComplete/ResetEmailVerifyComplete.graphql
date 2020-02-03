@@ -1,0 +1,12 @@
+type ResetEmailVerifyCompleteResponse {
+  ok: Boolean
+  status: String
+  token: String
+}
+
+type Mutation {
+  ResetEmailVerifyComplete(
+    email: String
+    key: String
+  ): ResetEmailVerifyCompleteResponse
+}

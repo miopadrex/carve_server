@@ -18,7 +18,7 @@ const resolvers: Resolvers = {
         name,
         email,
         phoneNumber,
-        kakaoId,
+        kakaoPlusId,
         instaId,
         avatar,
         gender
@@ -38,25 +38,23 @@ const resolvers: Resolvers = {
             email,
             password,
             phoneNumber,
-            kakaoId,
+            kakaoPlusId,
             instaId,
             avatar,
             gender
           });
           const token = createJwt(newUser.id);
           const key = Math.floor(Math.random() * 100000).toString();
+          const emailSubject = `${newUser.name}님 회원가입을 진심으로 축하합니다!`;
+          const emailBody = `링크를 클릭하시면 이메일 인증페이지로 갑니다. <a href="/${key}">이메일 인증</a>`;
           if (newUser.email) {
-            const emailVerification = await prisma.createVerification({
+            await prisma.createVerification({
               payload: newUser.email,
               target: "EMAIL",
               key,
               verified: false
             });
-            sendVerificationEmail(
-              newUser.name,
-              emailVerification.key,
-              newUser.email
-            );
+            sendVerificationEmail(emailSubject, emailBody, newUser.email);
           }
           return {
             ok: true,

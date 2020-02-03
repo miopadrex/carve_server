@@ -1,14 +1,14 @@
 type User {
   id: ID! @id
   name: String
-  email: String @unique
+  email: String @unique @default(value:"")
   emailVerfied: Boolean @default(value: false)
   password: String
   phoneNumber: String @unique
-  kakaoId: String @unique
+  kakaoAuthId: String @unique
   kakaoPlusId: String @unique
   instaId: String @unique
-  naverId: String @unique
+  naverAuthId: String @unique
   avatar: String @default(value: "miopadre.com")
   gender: String
   age: Int

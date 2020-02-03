@@ -1,8 +1,19 @@
-export const typeDefs = ["type CompleteEmailVerifyResponse {\n  ok: Boolean!\n  status: String!\n}\n\ntype Mutation {\n  CompleteEmailVerify(key: String!): CompleteEmailVerifyResponse\n  EmailSignIn(email: String!, password: String!): EmailSignInResponse!\n  EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!\n  KaKaoLogin(id: String!, name: String, email: String, gender: String, avatar: String): KaKaoLoginResponse!\n  NaverLogin(id: String!, name: String, avatar: String, gender: String): NaverLoginResponse!\n  RequestEmailVerify: RequestEmailVerifyResponse\n}\n\ntype EmailSignInResponse {\n  ok: Boolean!\n  status: String!\n  token: String\n}\n\ntype EmailSignUpResponse {\n  ok: Boolean!\n  status: String!\n  token: String\n}\n\ntype KaKaoLoginResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype NaverLoginResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype RequestEmailVerifyResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype User {\n  id: String!\n  name: String!\n  email: String!\n  password: String\n  phoneNumber: String!\n  kakaoId: String\n  kakaoPlusId: String\n  instaId: String\n  avatar: String\n  gender: String\n  age: Int\n  isTatooist: Boolean!\n  rule: String\n  createdAt: String\n  updatedAt: String\n}\n\ntype Query {\n  user: User!\n}\n\ntype Verification {\n  id: String!\n  target: String!\n  payload: String!\n  key: String!\n  verified: Boolean!\n  createdAt: String\n  updatedAt: String\n}\n"];
+export const typeDefs = ["type ChangePasswordResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype Mutation {\n  ChangePassword(email: String, phoneNumber: String, password: String!): ChangePasswordResponse!\n  ChangePasswordConfirm(password: String): ChangePasswordConfirmResponse!\n  EditProfile(email: String!, name: String, phoneNumber: String!, kakaoPlusId: String!, instaId: String!, avatar: String, gender: String, age: Int): EditProfileResponse!\n  EmailSignIn(email: String!, password: String!): EmailSignInResponse!\n  EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoPlusId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!\n  KaKaoLogin(kakaoAuthId: String!, name: String, email: String, gender: String, avatar: String): KaKaoLoginResponse!\n  NaverLogin(naverAuthId: String!, name: String, email: String, avatar: String, gender: String): NaverLoginResponse!\n  RequestLoginEmailVerify(email: String): RequestLoginEmailVerifyResponse!\n  RequestPasswordResetEmailVerify(email: String): RequestPasswordResetEmailVerifyResponse!\n  ResetEmailVerifyComplete(email: String, key: String): ResetEmailVerifyCompleteResponse\n  SignEmailVerifyComplete(key: String!): SignEmailVerifyCompleteResponse\n}\n\ntype ChangePasswordConfirmResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype EditProfileResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype EmailSignInResponse {\n  ok: Boolean!\n  status: String!\n  token: String\n}\n\ntype EmailSignUpResponse {\n  ok: Boolean!\n  status: String!\n  token: String\n}\n\ntype GetEmailResponse {\n  ok: Boolean\n  status: String\n  email: String\n}\n\ntype Query {\n  GetEmail(phoneNumber: String): GetEmailResponse!\n  GetMyProfile: User!\n}\n\ntype KaKaoLoginResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype NaverLoginResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype RequestLoginEmailVerifyResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype RequestPasswordResetEmailVerifyResponse {\n  ok: Boolean\n  status: String\n}\n\ntype ResetEmailVerifyCompleteResponse {\n  ok: Boolean\n  status: String\n  token: String\n}\n\ntype SignEmailVerifyCompleteResponse {\n  ok: Boolean!\n  status: String!\n}\n\ntype User {\n  id: String!\n  name: String!\n  email: String!\n  password: String\n  phoneNumber: String!\n  kakaoAuthId: String\n  kakaoPlusId: String\n  naverAuthId: String\n  instaId: String\n  avatar: String\n  gender: String\n  age: Int\n  isTatooist: Boolean!\n  rule: String\n  createdAt: String\n  updatedAt: String\n}\n\ntype Verification {\n  id: String!\n  target: String!\n  payload: String!\n  key: String!\n  verified: Boolean!\n  createdAt: String\n  updatedAt: String\n}\n"];
 /* tslint:disable */
 
 export interface Query {
-  user: User;
+  GetEmail: GetEmailResponse;
+  GetMyProfile: User;
+}
+
+export interface GetEmailQueryArgs {
+  phoneNumber: string | null;
+}
+
+export interface GetEmailResponse {
+  ok: boolean | null;
+  status: string | null;
+  email: string | null;
 }
 
 export interface User {
@@ -11,8 +22,9 @@ export interface User {
   email: string;
   password: string | null;
   phoneNumber: string;
-  kakaoId: string | null;
+  kakaoAuthId: string | null;
   kakaoPlusId: string | null;
+  naverAuthId: string | null;
   instaId: string | null;
   avatar: string | null;
   gender: string | null;
@@ -24,16 +36,38 @@ export interface User {
 }
 
 export interface Mutation {
-  CompleteEmailVerify: CompleteEmailVerifyResponse | null;
+  ChangePassword: ChangePasswordResponse;
+  ChangePasswordConfirm: ChangePasswordConfirmResponse;
+  EditProfile: EditProfileResponse;
   EmailSignIn: EmailSignInResponse;
   EmailSignUp: EmailSignUpResponse;
   KaKaoLogin: KaKaoLoginResponse;
   NaverLogin: NaverLoginResponse;
-  RequestEmailVerify: RequestEmailVerifyResponse | null;
+  RequestLoginEmailVerify: RequestLoginEmailVerifyResponse;
+  RequestPasswordResetEmailVerify: RequestPasswordResetEmailVerifyResponse;
+  ResetEmailVerifyComplete: ResetEmailVerifyCompleteResponse | null;
+  SignEmailVerifyComplete: SignEmailVerifyCompleteResponse | null;
 }
 
-export interface CompleteEmailVerifyMutationArgs {
-  key: string;
+export interface ChangePasswordMutationArgs {
+  email: string | null;
+  phoneNumber: string | null;
+  password: string;
+}
+
+export interface ChangePasswordConfirmMutationArgs {
+  password: string | null;
+}
+
+export interface EditProfileMutationArgs {
+  email: string;
+  name: string | null;
+  phoneNumber: string;
+  kakaoPlusId: string;
+  instaId: string;
+  avatar: string | null;
+  gender: string | null;
+  age: number | null;
 }
 
 export interface EmailSignInMutationArgs {
@@ -46,7 +80,7 @@ export interface EmailSignUpMutationArgs {
   email: string;
   password: string;
   phoneNumber: string | null;
-  kakaoId: string | null;
+  kakaoPlusId: string | null;
   instaId: string | null;
   avatar: string | null;
   gender: string | null;
@@ -55,7 +89,7 @@ export interface EmailSignUpMutationArgs {
 }
 
 export interface KaKaoLoginMutationArgs {
-  id: string;
+  kakaoAuthId: string;
   name: string | null;
   email: string | null;
   gender: string | null;
@@ -63,15 +97,44 @@ export interface KaKaoLoginMutationArgs {
 }
 
 export interface NaverLoginMutationArgs {
-  id: string;
+  naverAuthId: string;
   name: string | null;
+  email: string | null;
   avatar: string | null;
   gender: string | null;
 }
 
-export interface CompleteEmailVerifyResponse {
+export interface RequestLoginEmailVerifyMutationArgs {
+  email: string | null;
+}
+
+export interface RequestPasswordResetEmailVerifyMutationArgs {
+  email: string | null;
+}
+
+export interface ResetEmailVerifyCompleteMutationArgs {
+  email: string | null;
+  key: string | null;
+}
+
+export interface SignEmailVerifyCompleteMutationArgs {
+  key: string;
+}
+
+export interface ChangePasswordResponse {
   ok: boolean;
-  status: string;
+  status: string | null;
+  token: string | null;
+}
+
+export interface ChangePasswordConfirmResponse {
+  ok: boolean;
+  status: string | null;
+}
+
+export interface EditProfileResponse {
+  ok: boolean;
+  status: string | null;
 }
 
 export interface EmailSignInResponse {
@@ -98,9 +161,25 @@ export interface NaverLoginResponse {
   token: string | null;
 }
 
-export interface RequestEmailVerifyResponse {
+export interface RequestLoginEmailVerifyResponse {
   ok: boolean;
   status: string | null;
+}
+
+export interface RequestPasswordResetEmailVerifyResponse {
+  ok: boolean | null;
+  status: string | null;
+}
+
+export interface ResetEmailVerifyCompleteResponse {
+  ok: boolean | null;
+  status: string | null;
+  token: string | null;
+}
+
+export interface SignEmailVerifyCompleteResponse {
+  ok: boolean;
+  status: string;
 }
 
 export interface Verification {

@@ -12,23 +12,52 @@ const resolvers: Resolvers = {
       _,
       args: NaverLoginMutationArgs
     ): Promise<NaverLoginResponse> => {
-      const { id } = args;
+      const { naverAuthId, name, email, avatar, gender } = args;
+      const naverExisting = await prisma.user({ naverAuthId });
+      const emailExisting = await prisma.user({ email });
+      const oldAuth = await prisma.user({ email }).naverAuthId();
       try {
-        const extingUser = await prisma.user({ id });
-        if (!extingUser) {
-          const newUser = await prisma.createUser({ ...args });
-          const token = createJwt(newUser.id);
-          return {
-            ok: true,
-            status: "네이버 로그인이 성공적으로 완료되었습니다.",
-            token
-          };
+        if (naverExisting) {
+          if (oldAuth === naverAuthId || oldAuth === null) {
+            const token = createJwt(naverExisting.id);
+            await prisma.updateUser({
+              where: { naverAuthId },
+              data: { email, name, avatar, gender }
+            });
+            return {
+              ok: true,
+              status: "네이버 로그인이 성공적으로 완료되었습니다.",
+              token
+            };
+          } else {
+            return {
+              ok: false,
+              status:
+                "이메일로 가입된 계정이있습니다. 다른이메일을 사용하시거나 이메일 로그인을 이용하세요",
+              token: null
+            };
+          }
         } else {
-          return {
-            ok: false,
-            status: "이미 네이버 아이디으로 가입하신 계정이 존재합니다.",
-            token: null
-          };
+          if (emailExisting) {
+            const token = createJwt(emailExisting.id);
+            await prisma.updateUser({
+              where: { email },
+              data: { name, avatar, gender, naverAuthId }
+            });
+            return {
+              ok: true,
+              status: "네이버 로그인이 성공적으로 완료되었습니다.",
+              token
+            };
+          } else {
+            const newUser = await prisma.createUser({ ...args });
+            const token = createJwt(newUser.id);
+            return {
+              ok: true,
+              status: "네이버 가입이 성공적으로 완료되었습니다",
+              token
+            };
+          }
         }
       } catch (error) {
         return {

@@ -15,10 +15,13 @@ const sendEmail = (subject: string, html: string, to: string) => {
   return mailGunClient.messages().send(emailData);
 };
 
-export const sendVerificationEmail = (name: string, key: string, to: any) => {
+export const sendVerificationEmail = (
+  emailSubject,
+  emailBody,
+  to: any | undefined
+) => {
   try {
-    const emailSubject = `${name}님 회원가입을 진심으로 축하합니다!`;
-    const emailBody = `링크를 클릭하시면 이메일 인증페이지로 갑니다. <a href="/${key}">이메일 인증</a>`;
+    console.log(emailSubject, emailBody, to);
     sendEmail(emailSubject, emailBody, to);
   } catch (error) {
     return error;

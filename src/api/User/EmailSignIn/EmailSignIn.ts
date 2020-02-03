@@ -23,7 +23,7 @@ const resolvers: Resolvers = {
             token: null
           };
         }
-        const checkPassword = await bcrypt.compare(password, user.password);
+        const checkPassword = await bcrypt.compare(password, user.password!);
         if (checkPassword) {
           const token = createJwt(user.id);
           return {

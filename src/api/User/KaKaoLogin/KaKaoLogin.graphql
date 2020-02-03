@@ -6,7 +6,7 @@ type KaKaoLoginResponse {
 
 type Mutation {
   KaKaoLogin(
-    id: String!
+    kakaoAuthId: String!
     name: String
     email: String
     gender: String

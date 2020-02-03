@@ -1,0 +1,7 @@
+type RequestLoginEmailVerifyResponse {
+  ok: Boolean!
+  status: String
+}
+type Mutation {
+  RequestLoginEmailVerify(email: String): RequestLoginEmailVerifyResponse!
+}

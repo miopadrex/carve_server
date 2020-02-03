@@ -4,8 +4,9 @@ type User {
   email: String!
   password: String
   phoneNumber: String!
-  kakaoId: String
+  kakaoAuthId: String
   kakaoPlusId: String
+  naverAuthId: String
   instaId: String
   avatar: String
   gender: String
@@ -14,8 +15,4 @@ type User {
   rule: String
   createdAt: String
   updatedAt: String
-}
-
-type Query {
-  user: User!
 }

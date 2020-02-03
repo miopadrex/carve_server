@@ -1,17 +1,23 @@
 import { prisma, User } from "../../../generated/prisma-client";
-import { RequestEmailVerifyResponse } from "../../../types/graph";
+import {
+  RequestLoginEmailVerifyMutationArgs,
+  RequestLoginEmailVerifyResponse
+} from "../../../types/graph";
 import { Resolvers } from "../../../types/resolvers";
 import { sendVerificationEmail } from "../../../utils/sendEmail";
 
 const resolvers: Resolvers = {
   Mutation: {
-    RequestEmailVerify: async (
+    RequestLoginEmailVerify: async (
       _,
-      __,
+      args: RequestLoginEmailVerifyMutationArgs,
       { request, isAuth }
-    ): Promise<RequestEmailVerifyResponse> => {
+    ): Promise<RequestLoginEmailVerifyResponse> => {
       isAuth(request);
       const user: User = request.user;
+      const key = Math.floor(Math.random() * 100000).toString();
+      const emailSubject = `${user.name} 님 회원가입을 진심으로 축하합니다!`;
+      const emailBody = `링크를 클릭하시면 이메일 인증페이지로 갑니다. <a href="/${key}">이메일 인증</a>`;
       if (user.emailVerfied) {
         return {
           ok: false,
@@ -26,16 +32,15 @@ const resolvers: Resolvers = {
             data: { key: "" }
           });
         }
-        const key = Math.floor(Math.random() * 100000).toString();
-        const newVerify = await prisma.updateVerification({
+        await prisma.updateVerification({
           where: { payload: user.email },
           data: { key }
         });
+        await sendVerificationEmail(emailSubject, emailBody, user.email);
         return {
           ok: true,
           status: "인증번호 전송이 완료되었습니다."
         };
-        await sendVerificationEmail(user.name, newVerify.key, user.email);
       } catch (error) {
         return {
           ok: false,

@@ -1,32 +1,31 @@
 import { prisma, User } from "../../../generated/prisma-client";
 import {
-  CompleteEmailVerifyMutationArgs,
-  CompleteEmailVerifyResponse
+  SignEmailVerifyCompleteMutationArgs,
+  SignEmailVerifyCompleteResponse
 } from "../../../types/graph";
 import { Resolvers } from "../../../types/resolvers";
 const resolvers: Resolvers = {
   Mutation: {
-    CompleteEmailVerify: async (
+    SignEmailVerifyComplete: async (
       _,
-      args: CompleteEmailVerifyMutationArgs,
+      args: SignEmailVerifyCompleteMutationArgs,
       { request, isAuth }
-    ): Promise<CompleteEmailVerifyResponse> => {
+    ): Promise<SignEmailVerifyCompleteResponse> => {
       isAuth(request);
       const user: User = request.user;
       const { key } = args;
       try {
-        const findCertification = await prisma.verification({
-          payload: user.email
-        });
-        if (findCertification?.key === key) {
+        const findCertification = await prisma
+          .verification({
+            payload: user.email
+          })
+          .key();
+        if (findCertification === key) {
           await prisma.updateUser({
             where: { id: user.id },
             data: { emailVerfied: true }
           });
-          await prisma.updateVerification({
-            where: { payload: user.email },
-            data: { verified: true }
-          });
+          await prisma.deleteVerification({ payload: user.email });
           return {
             ok: true,
             status: "이메일인증이 완료되었습니다."
