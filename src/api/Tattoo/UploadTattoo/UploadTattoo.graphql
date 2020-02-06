@@ -1,0 +1,20 @@
+type UploadTattooResponse {
+  ok: Boolean!
+  status: String
+  tattoo: Tattoo
+}
+type Mutation {
+  UploadTattoo(
+    title: String!
+    contents: String!
+    price: Int!
+    genre: String!
+    subject: String!
+    part: String!
+    size: String!
+    numberOfTask: String!
+    workTime: String!
+    sale: Boolean!
+    images: [String!]
+  ): UploadTattooResponse!
+}

@@ -1,0 +1,8 @@
+type Fav {
+  id: String!
+  writeUser: User!
+  tattoo: Tattoo
+  tattooist: User
+  createdAt: String
+  updatedAt: String
+}

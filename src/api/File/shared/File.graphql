@@ -1,0 +1,8 @@
+type File {
+  id: String!
+  url: String!
+  tattoo: Tattoo
+  tattooReview: Review
+  createdAt: String
+  updatedA: String
+}

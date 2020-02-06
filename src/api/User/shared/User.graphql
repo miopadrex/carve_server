@@ -11,8 +11,26 @@ type User {
   avatar: String
   gender: String
   age: Int
-  isTatooist: Boolean!
+  isTattooist: Boolean!
   rule: String
+  storeName: String
+  location: String
+  guarantee: Boolean
+  recommendation: Boolean
+  reservationsAsTatooist: Reservation
+  reservationsAsTatooistCount: Int
+  reservationsAsUser: Reservation
+  reservationAsUserCount: Int
+  reservationAsCount: Int
+  writeReviews: [Review!]
+  writeFavs: [Review!]
+  tattoos: [Tattoo!]
+  tattooCount: Int!
+  asReviews: [Review!]
+  asReviewCount: Int!
+  isFav: Boolean!
+  favs: [Fav!]
+  favsCount: Int!
   createdAt: String
   updatedAt: String
 }

@@ -1,0 +1,9 @@
+type CategorySearchTattooResponse {
+  ok: Boolean!
+  status: String
+  tattoos: [Tattoo!]
+}
+
+type Query {
+  CategorySearchTattoo(term: String): CategorySearchTattooResponse
+}

@@ -12,8 +12,76 @@ type User {
   avatar: String @default(value: "miopadre.com")
   gender: String
   age: Int
-  isTatooist: Boolean! @default(value: false)
+  isTattooist: Boolean! @default(value: false)
+  storeName: String
+  location: String
+  guarantee: Boolean @default(value:false)
+  recommendation: Boolean @default(value:false)
+  asReviews: [Review!]! @relation(name: "ReviewOfTattoist" onDelete: CASCADE)
   rule: Role! @default(value: USER)
+  reservationsAsUser: [Reservation!]! @relation(name:"ReservationAsUser")
+  reservationsAsTatooist: [Reservation!]! @relation(name:"ReservationAsTattooist")
+  tattoos: [Tattoo!]! @relation(name: "TattooOfTattooist" onDelete: CASCADE)
+  favs: [Fav!]! @relation(name: "FavsOfTattooist" onDelete: CASCADE) 
+  writeReviews: [Review!]! @relation(name:"ReviewOfUser" onDelete: CASCADE) 
+  writeFavs:[Fav!]! @relation(name: "FavsOfUser" onDelete: CASCADE)
+  reservationsAsTatooistCount: Int @default(value:0)
+  favsCount: Int @default(value:0)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Tattoo {
+  id: ID! @id
+  title: String!
+  contents: String!
+  images: [File!]! @relation(name: "FileOfTattoo" onDelete: CASCADE)
+  writeUser: User! @relation(name: "TattooOfTattooist")
+  price: Int!
+  genre: String!
+  subject: String!
+  part: String!
+  size: String!
+  numberOfTask: String!
+  workTime: String!
+  sale: Boolean! @default(value:false)
+  isFav: Boolean! @default(value:false)
+  favs: [Fav!]! @relation(name: "FavsOfTattoo" onDelete: CASCADE)
+  reviews: [Review!]! @relation(name:"ReviewOfTattoo" onDelete: CASCADE) 
+  reservations : [Reservation!]! @relation(name:"ReservationOfTattoo")
+  favsCount: Int @default(value:0)
+  reviewsCount: Int @default(value:0)
+  reservationCount: Int @default(value:0)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Fav {
+  id: ID! @id
+  writeUser: User @relation(name: "FavsOfUser")
+  tattoo: Tattoo @relation(name: "FavsOfTattoo")
+  tattooist: User @relation(name: "FavsOfTattooist")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Review {
+  id: ID! @id
+  images: [File!]! @relation(name:"FileOfTattooReview" onDelete: CASCADE)
+  contents: String!
+  grade: Int!
+  writeUser: User @relation(name: "ReviewOfUser")
+  tattoo: Tattoo @relation(name: "ReviewOfTattoo")
+  tattooist: User @relation(name: "ReviewOfTattoist")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type File {
+  id: ID! @id
+  url: String!
+  tattoo: Tattoo @relation(name:"FileOfTattoo") 
+  tattooReview: Review @relation(name:"FileOfTattooReview")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -26,6 +94,23 @@ type Verification {
   verified: Boolean! @default(value: false)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Reservation {
+  id: ID! @id
+  status: ReservationStatus! @default(value:REQUESTING)
+  requestUser: User @relation(name:"ReservationAsUser")
+  tattooist: User @relation(name:"ReservationAsTattooist")
+  tatoo: Tattoo @relation(name:"ReservationOfTattoo")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+enum ReservationStatus {
+  REQUESTING
+  ACCEPTED
+  CANCELED
+  WORKING
+  FINISHED
 }
 enum Target {
   PHONE

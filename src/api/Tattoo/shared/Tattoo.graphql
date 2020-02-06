@@ -1,0 +1,24 @@
+type Tattoo {
+  id: String!
+  title: String!
+  contents: String!
+  price: Int!
+  genre: String!
+  subject: String!
+  part: String!
+  size: String!
+  numberOfTask: String!
+  workTime: String!
+  sale: Boolean!
+  isFav: Boolean!
+  favsCount: Int
+  images: [File]
+  writeUser: User!
+  favs: [Fav!]
+  reviews: [Review!]
+  reviewsCount: Int
+  reservations: [Reservation!]
+  reservationCount: Int
+  createdAt: String
+  updatedAt: String
+}

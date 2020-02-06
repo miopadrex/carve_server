@@ -1,0 +1,27 @@
+type EditTattooResponse {
+  ok: Boolean!
+  status: String
+}
+type Mutation {
+  EditTattoo(
+    id: String!
+    title: String
+    contents: String
+    price: Int
+    genre: String
+    subject: String
+    part: String
+    size: String
+    numberOfTask: String
+    workTime: String
+    sale: Boolean
+    action: ACTIONS!
+    deleteId: [String]
+    createUrl: [String]
+  ): EditTattooResponse
+}
+
+enum ACTIONS {
+  EDIT
+  DELETE
+}

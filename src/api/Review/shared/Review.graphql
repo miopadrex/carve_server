@@ -1,0 +1,11 @@
+type Review {
+  id: String!
+  contents: String!
+  grade: Int!
+  images: [File!]
+  writeUser: User!
+  tattoo: Tattoo
+  tattooist: User
+  createdAt: String
+  updatedAt: String
+}
