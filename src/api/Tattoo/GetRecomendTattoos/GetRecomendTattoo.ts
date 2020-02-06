@@ -1,17 +1,17 @@
 import { prisma } from "../../../generated/prisma-client";
-import { GetTattooQueryArgs } from "../../../types/graph";
 import { Resolvers } from "../../../types/resolvers";
-
 const resolvers: Resolvers = {
   Query: {
-    GetTattoo: async (_, args: GetTattooQueryArgs) => {
-      const { tattooId } = args;
+    GetRecomendTattoos: async () => {
       try {
-        const tattoo = await prisma.tattoo({ id: tattooId });
+        const tattoos = await prisma.tattoos({
+          where: { writeUser: { recommendation: true } },
+          orderBy: "favsCount_ASC"
+        });
         return {
           ok: true,
-          status: "타투를 성공적으로 불러왔습니다",
-          tattoo
+          status: "추천 타투목록을 불러오는데 성공하였습니다.",
+          tattoo: tattoos
         };
       } catch (error) {
         return {
@@ -23,4 +23,5 @@ const resolvers: Resolvers = {
     }
   }
 };
+
 export default resolvers;

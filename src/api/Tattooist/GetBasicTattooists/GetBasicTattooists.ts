@@ -1,26 +1,26 @@
 import { prisma } from "../../../generated/prisma-client";
-import { GetTattooQueryArgs } from "../../../types/graph";
 import { Resolvers } from "../../../types/resolvers";
-
 const resolvers: Resolvers = {
   Query: {
-    GetTattoo: async (_, args: GetTattooQueryArgs) => {
-      const { tattooId } = args;
+    GetBasicTattooists: async () => {
       try {
-        const tattoo = await prisma.tattoo({ id: tattooId });
+        const tattooists = await prisma.users({
+          where: { isTattooist: true }
+        });
         return {
           ok: true,
-          status: "타투를 성공적으로 불러왔습니다",
-          tattoo
+          status: "타투이스트 목록을 불러오는데 성공하였습니다.",
+          tattooists
         };
       } catch (error) {
         return {
           ok: false,
           status: error,
-          tattoo: null
+          tattooists: null
         };
       }
     }
   }
 };
+
 export default resolvers;

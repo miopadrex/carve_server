@@ -1,0 +1,8 @@
+type RequestSmsVerifyResponse {
+  ok: Boolean
+  status: String
+}
+
+type Mutation {
+  RequestSmsVerify(phoneNumber: String!): RequestSmsVerifyResponse
+}

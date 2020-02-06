@@ -1,28 +1,25 @@
 import { prisma, User } from "../../../generated/prisma-client";
-import {
-  SignEmailVerifyCompleteMutationArgs,
-  SignEmailVerifyCompleteResponse
-} from "../../../types/graph";
+import { CompleteSmsVerifyMutationArgs } from "../../../types/graph";
 import { Resolvers } from "../../../types/resolvers";
+
 const resolvers: Resolvers = {
   Mutation: {
-    SignEmailVerifyComplete: async (
+    CompleteSmsVerify: async (
       _,
-      args: SignEmailVerifyCompleteMutationArgs,
-      { request, isAuth }
-    ): Promise<SignEmailVerifyCompleteResponse> => {
-      isAuth(request);
+      args: CompleteSmsVerifyMutationArgs,
+      { request }
+    ) => {
       const user: User = request.user;
-      const { email } = args;
-      const { key } = args;
+      const { phoneNumber, key } = args;
       try {
         const verification = await prisma.verification({
-          payload: email
+          payload: phoneNumber
         });
+        console.log(verification);
         if (verification?.key === key) {
           await prisma.updateUser({
             where: { id: user.id },
-            data: { emailVerfied: true }
+            data: { phoneVerfied: true }
           });
           await prisma.updateVerification({
             where: { id: verification.id },
@@ -30,22 +27,21 @@ const resolvers: Resolvers = {
           });
           return {
             ok: true,
-            status: "이메일인증이 완료되었습니다."
+            status: "번호인증이 성공적으로 완료되었습니다"
           };
         } else {
           return {
             ok: false,
-            status: "인증번호가 맞지않습니다."
+            status: "인증키가 틀렸습니다. 확인한뒤에 다시 시도해주세요."
           };
         }
-      } catch (error) {
+      } catch (e) {
         return {
           ok: false,
-          status: error
+          status: e
         };
       }
     }
   }
 };
-
 export default resolvers;

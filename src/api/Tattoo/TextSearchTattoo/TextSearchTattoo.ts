@@ -15,10 +15,9 @@ const resolvers: Resolvers = {
             ]
           }
         });
-        console.log(tattoos);
         return {
           ok: true,
-          status: "검색 결과를 성공적으로 불러왔습니다.",
+          status: "타투검색 결과를 성공적으로 불러왔습니다.",
           tattoos
         };
       } catch (error) {

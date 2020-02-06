@@ -1,0 +1,7 @@
+type ToggleTattooistResponse {
+  ok: Boolean
+  status: String
+}
+type Mutation {
+  ToggleTattooist: ToggleTattooistResponse
+}

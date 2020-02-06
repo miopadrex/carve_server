@@ -3,6 +3,7 @@ type User {
   name: String
   email: String @unique @default(value:"")
   emailVerfied: Boolean @default(value: false)
+  phoneVerfied: Boolean @default(value: false)
   password: String
   phoneNumber: String @unique
   kakaoAuthId: String @unique
@@ -12,21 +13,27 @@ type User {
   avatar: String @default(value: "miopadre.com")
   gender: String
   age: Int
+  writeFavs:[Fav!]! @relation(name: "FavsOfUser" onDelete: CASCADE)
+  writeFavsCount: Int @default(value:0)
+  writeReviews: [Review!]! @relation(name:"ReviewOfUser" onDelete: CASCADE) 
+  writeReviewsCount: Int @default(value:0)
+  reservationAsUserCount: Int @default(value:0)
+  reservationsAsUser: [Reservation!]! @relation(name:"ReservationAsUser")
+  rule: Role! @default(value: USER)
   isTattooist: Boolean! @default(value: false)
   storeName: String
   location: String
   guarantee: Boolean @default(value:false)
+  parking: Boolean @default(value:false) 
   recommendation: Boolean @default(value:false)
+  asReviewCount: Int @default(value:0)
+  favsCount: Int @default(value:0)
+  tattooCount: Int @default(value:0)
+  reservationsAsTatooistCount: Int @default(value:0)
   asReviews: [Review!]! @relation(name: "ReviewOfTattoist" onDelete: CASCADE)
-  rule: Role! @default(value: USER)
-  reservationsAsUser: [Reservation!]! @relation(name:"ReservationAsUser")
   reservationsAsTatooist: [Reservation!]! @relation(name:"ReservationAsTattooist")
   tattoos: [Tattoo!]! @relation(name: "TattooOfTattooist" onDelete: CASCADE)
   favs: [Fav!]! @relation(name: "FavsOfTattooist" onDelete: CASCADE) 
-  writeReviews: [Review!]! @relation(name:"ReviewOfUser" onDelete: CASCADE) 
-  writeFavs:[Fav!]! @relation(name: "FavsOfUser" onDelete: CASCADE)
-  reservationsAsTatooistCount: Int @default(value:0)
-  favsCount: Int @default(value:0)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -45,6 +52,8 @@ type Tattoo {
   numberOfTask: String!
   workTime: String!
   sale: Boolean! @default(value:false)
+  payCard: Boolean @default(value:false) 
+  payDivision : Boolean @default(value:false) 
   isFav: Boolean! @default(value:false)
   favs: [Fav!]! @relation(name: "FavsOfTattoo" onDelete: CASCADE)
   reviews: [Review!]! @relation(name:"ReviewOfTattoo" onDelete: CASCADE) 

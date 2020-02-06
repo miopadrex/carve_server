@@ -4,6 +4,8 @@ type User {
   email: String!
   password: String
   phoneNumber: String!
+  phoneVerfied: Boolean
+  emailVerfied: Boolean
   kakaoAuthId: String
   kakaoPlusId: String
   naverAuthId: String
@@ -11,24 +13,26 @@ type User {
   avatar: String
   gender: String
   age: Int
-  isTattooist: Boolean!
+  reservationsAsUser: Reservation
+  reservationAsUserCount: Int
+  writeFavs: [Review!]
+  writeFavsCount: Int
+  writeReviews: [Review!]
+  writeReviewsCount: Int
   rule: String
+  isTattooist: Boolean!
+  isFav: Boolean!
   storeName: String
   location: String
+  parking: Boolean
   guarantee: Boolean
   recommendation: Boolean
   reservationsAsTatooist: Reservation
   reservationsAsTatooistCount: Int
-  reservationsAsUser: Reservation
-  reservationAsUserCount: Int
-  reservationAsCount: Int
-  writeReviews: [Review!]
-  writeFavs: [Review!]
-  tattoos: [Tattoo!]
-  tattooCount: Int!
   asReviews: [Review!]
-  asReviewCount: Int!
-  isFav: Boolean!
+  asReviewCount: Int
+  tattoos: [Tattoo!]
+  tattooCount: Int
   favs: [Fav!]
   favsCount: Int!
   createdAt: String

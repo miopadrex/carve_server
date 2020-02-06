@@ -3,5 +3,8 @@ type SignEmailVerifyCompleteResponse {
   status: String!
 }
 type Mutation {
-  SignEmailVerifyComplete(key: String!): SignEmailVerifyCompleteResponse
+  SignEmailVerifyComplete(
+    email: String!
+    key: String!
+  ): SignEmailVerifyCompleteResponse
 }

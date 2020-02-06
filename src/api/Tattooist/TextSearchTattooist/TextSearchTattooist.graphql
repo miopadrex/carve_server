@@ -1,0 +1,9 @@
+type TextSearchTattooistResponse {
+  ok: Boolean!
+  status: String
+  tattooist: [User!]
+}
+
+type Query {
+  TextSearchTattooist(term: String): TextSearchTattooistResponse
+}

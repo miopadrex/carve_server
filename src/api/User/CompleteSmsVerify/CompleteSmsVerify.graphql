@@ -1,0 +1,11 @@
+type CompleteSmsVerifyResponse {
+  ok: Boolean
+  status: String
+}
+
+type Mutation {
+  CompleteSmsVerify(
+    phoneNumber: String!
+    key: String!
+  ): CompleteSmsVerifyResponse
+}

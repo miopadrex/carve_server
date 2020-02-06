@@ -1,0 +1,8 @@
+type GetBasicTattoosResponse {
+  ok: Boolean!
+  status: String
+  tattoo: [Tattoo!]
+}
+type Query {
+  GetBasicTattoos: GetBasicTattoosResponse
+}

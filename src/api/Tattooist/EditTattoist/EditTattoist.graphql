@@ -1,0 +1,12 @@
+type EditTattooistResponse {
+  ok: Boolean!
+  status: String
+  tattooist: User
+}
+type Mutation {
+  EditTattooist(
+    storeName: String
+    location: String
+    parking: Boolean
+  ): EditTattooistResponse!
+}

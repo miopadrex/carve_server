@@ -7,11 +7,18 @@ type GetFavTattooResponse {
 type Query {
   GetFavTattoo: GetFavTattooResponse
   GetFavTattooist: GetFavTattooistResponse
+  GetReview(tattooId: String, tattooistId: String): GetReviewResponse
   CategorySearchTattoo(term: String): CategorySearchTattooResponse
-  GetGuaranteeTattoo: GetGuaranteeTattooResponse
-  GetRecomendTattoo: GetRecomendTattooResponse
-  GetTattoo: GetTattooResponse
+  GetBasicTattoos: GetBasicTattoosResponse
+  GetGuaranteeTattoos: GetGuaranteeTattoosResponse
+  GetRecomendTattoos: GetRecomendTattoosResponse
+  GetTattoo(tattooId: String): GetTattooResponse
   TextSearchTattoo(term: String): TextSearchTattooResponse
+  GetBasicTattooists: GetBasicTattooistsResponse
+  GetGuaranteeTattooists: GetGuaranteeTattooistsResponse
+  GetRecommendTattooists: GetRecommendTattooistsResponse
+  GetTattooist(tattooistId: String): GetTattooistResponse
+  TextSearchTattooist(term: String): TextSearchTattooistResponse
   GetEmail(phoneNumber: String): GetEmailResponse!
   GetMyProfile: User!
 }
@@ -50,6 +57,39 @@ type Reservation {
   updatedAt: String
 }
 
+type CreateTattooReviewResponse {
+  ok: Boolean!
+  status: String
+  review: Review!
+}
+
+type Mutation {
+  CreateTattooReview(contents: String!, grade: Int!, images: [String!], tattooId: String, tattooistId: String): CreateTattooReviewResponse
+  EditTattoo(id: String!, title: String, contents: String, price: Int, genre: String, subject: String, part: String, size: String, numberOfTask: String, workTime: String, sale: Boolean, action: ACTIONS!, deleteId: [String], createUrl: [String]): EditTattooResponse
+  UploadTattoo(title: String!, contents: String!, price: Int!, genre: String!, subject: String!, part: String!, size: String!, numberOfTask: String!, workTime: String!, sale: Boolean!, payCard: Boolean, payDivision: Boolean, images: [String!]): UploadTattooResponse!
+  EditTattooist(storeName: String, location: String, parking: Boolean): EditTattooistResponse!
+  ToggleTattooist: ToggleTattooistResponse
+  ChangePassword(email: String, phoneNumber: String, password: String!): ChangePasswordResponse!
+  ChangePasswordConfirm(password: String): ChangePasswordConfirmResponse!
+  CompleteSmsVerify(phoneNumber: String!, key: String!): CompleteSmsVerifyResponse
+  EditProfile(email: String!, name: String, phoneNumber: String!, kakaoPlusId: String!, instaId: String!, avatar: String, gender: String, age: Int): EditProfileResponse!
+  EmailSignIn(email: String!, password: String!): EmailSignInResponse!
+  EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoPlusId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!
+  KaKaoLogin(kakaoAuthId: String!, name: String, email: String, gender: String, avatar: String): KaKaoLoginResponse!
+  NaverLogin(naverAuthId: String!, name: String, email: String, avatar: String, gender: String): NaverLoginResponse!
+  RequestLoginEmailVerify(email: String): RequestLoginEmailVerifyResponse!
+  RequestPasswordResetEmailVerify(email: String): RequestPasswordResetEmailVerifyResponse!
+  RequestSmsVerify(phoneNumber: String!): RequestSmsVerifyResponse
+  ResetEmailVerifyComplete(email: String, key: String): ResetEmailVerifyCompleteResponse
+  SignEmailVerifyComplete(email: String!, key: String!): SignEmailVerifyCompleteResponse
+}
+
+type GetReviewResponse {
+  ok: Boolean!
+  status: String
+  review: [Review!]
+}
+
 type Review {
   id: String!
   contents: String!
@@ -73,43 +113,33 @@ type EditTattooResponse {
   status: String
 }
 
-type Mutation {
-  EditTattoo(id: String!, title: String, contents: String, price: Int, genre: String, subject: String, part: String, size: String, numberOfTask: String, workTime: String, sale: Boolean, action: ACTIONS!, deleteId: [String], createUrl: [String]): EditTattooResponse
-  UploadTattoo(title: String!, contents: String!, price: Int!, genre: String!, subject: String!, part: String!, size: String!, numberOfTask: String!, workTime: String!, sale: Boolean!, images: [String!]): UploadTattooResponse!
-  ChangePassword(email: String, phoneNumber: String, password: String!): ChangePasswordResponse!
-  ChangePasswordConfirm(password: String): ChangePasswordConfirmResponse!
-  EditProfile(email: String!, name: String, phoneNumber: String!, kakaoPlusId: String!, instaId: String!, avatar: String, gender: String, age: Int): EditProfileResponse!
-  EmailSignIn(email: String!, password: String!): EmailSignInResponse!
-  EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoPlusId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!
-  KaKaoLogin(kakaoAuthId: String!, name: String, email: String, gender: String, avatar: String): KaKaoLoginResponse!
-  NaverLogin(naverAuthId: String!, name: String, email: String, avatar: String, gender: String): NaverLoginResponse!
-  RequestLoginEmailVerify(email: String): RequestLoginEmailVerifyResponse!
-  RequestPasswordResetEmailVerify(email: String): RequestPasswordResetEmailVerifyResponse!
-  ResetEmailVerifyComplete(email: String, key: String): ResetEmailVerifyCompleteResponse
-  SignEmailVerifyComplete(key: String!): SignEmailVerifyCompleteResponse
-}
-
 enum ACTIONS {
   EDIT
   DELETE
 }
 
-type GetGuaranteeTattooResponse {
+type GetBasicTattoosResponse {
   ok: Boolean!
   status: String
-  tattoo: [Tattoo!]!
+  tattoo: [Tattoo!]
 }
 
-type GetRecomendTattooResponse {
+type GetGuaranteeTattoosResponse {
   ok: Boolean!
   status: String
-  tattoo: [Tattoo]
+  tattoo: [Tattoo!]
+}
+
+type GetRecomendTattoosResponse {
+  ok: Boolean!
+  status: String
+  tattoo: [Tattoo!]
 }
 
 type GetTattooResponse {
   ok: Boolean!
   status: String
-  tattoo: [Tattoo!]!
+  tattoo: Tattoo
 }
 
 type TextSearchTattooResponse {
@@ -139,6 +169,8 @@ type Tattoo {
   isFav: Boolean!
   favsCount: Int
   images: [File]
+  payCard: Boolean
+  payDivision: Boolean
   writeUser: User!
   favs: [Fav!]
   reviews: [Review!]
@@ -149,6 +181,47 @@ type Tattoo {
   updatedAt: String
 }
 
+type EditTattooistResponse {
+  ok: Boolean!
+  status: String
+  tattooist: User
+}
+
+type GetBasicTattooistsResponse {
+  ok: Boolean!
+  status: String
+  tattooists: [User!]
+}
+
+type GetGuaranteeTattooistsResponse {
+  ok: Boolean!
+  status: String
+  tattooists: [User!]
+}
+
+type GetRecommendTattooistsResponse {
+  ok: Boolean!
+  status: String
+  tattooists: [User!]
+}
+
+type GetTattooistResponse {
+  ok: Boolean!
+  status: String
+  tattooist: User
+}
+
+type TextSearchTattooistResponse {
+  ok: Boolean!
+  status: String
+  tattooist: [User!]
+}
+
+type ToggleTattooistResponse {
+  ok: Boolean
+  status: String
+}
+
 type ChangePasswordResponse {
   ok: Boolean!
   status: String
@@ -157,6 +230,11 @@ type ChangePasswordResponse {
 
 type ChangePasswordConfirmResponse {
   ok: Boolean!
+  status: String
+}
+
+type CompleteSmsVerifyResponse {
+  ok: Boolean
   status: String
 }
 
@@ -205,6 +283,11 @@ type RequestPasswordResetEmailVerifyResponse {
   status: String
 }
 
+type RequestSmsVerifyResponse {
+  ok: Boolean
+  status: String
+}
+
 type ResetEmailVerifyCompleteResponse {
   ok: Boolean
   status: String
@@ -222,6 +305,8 @@ type User {
   email: String!
   password: String
   phoneNumber: String!
+  phoneVerfied: Boolean
+  emailVerfied: Boolean
   kakaoAuthId: String
   kakaoPlusId: String
   naverAuthId: String
@@ -229,24 +314,26 @@ type User {
   avatar: String
   gender: String
   age: Int
-  isTattooist: Boolean!
+  reservationsAsUser: Reservation
+  reservationAsUserCount: Int
+  writeFavs: [Review!]
+  writeFavsCount: Int
+  writeReviews: [Review!]
+  writeReviewsCount: Int
   rule: String
+  isTattooist: Boolean!
+  isFav: Boolean!
   storeName: String
   location: String
+  parking: Boolean
   guarantee: Boolean
   recommendation: Boolean
   reservationsAsTatooist: Reservation
   reservationsAsTatooistCount: Int
-  reservationsAsUser: Reservation
-  reservationAsUserCount: Int
-  reservationAsCount: Int
-  writeReviews: [Review!]
-  writeFavs: [Review!]
-  tattoos: [Tattoo!]
-  tattooCount: Int!
   asReviews: [Review!]
-  asReviewCount: Int!
-  isFav: Boolean!
+  asReviewCount: Int
+  tattoos: [Tattoo!]
+  tattooCount: Int
   favs: [Fav!]
   favsCount: Int!
   createdAt: String

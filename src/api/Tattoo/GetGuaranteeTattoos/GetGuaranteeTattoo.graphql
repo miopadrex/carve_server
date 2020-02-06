@@ -1,0 +1,8 @@
+type GetGuaranteeTattoosResponse {
+  ok: Boolean!
+  status: String
+  tattoo: [Tattoo!]
+}
+type Query {
+  GetGuaranteeTattoos: GetGuaranteeTattoosResponse
+}

@@ -21,7 +21,9 @@ const resolvers: Resolvers = {
         numberOfTask,
         workTime,
         sale,
-        images
+        images,
+        payCard,
+        payDivision
       } = args;
       try {
         const newTattoo = await prisma.createTattoo({
@@ -35,6 +37,8 @@ const resolvers: Resolvers = {
           numberOfTask,
           workTime,
           sale,
+          payCard,
+          payDivision,
           writeUser: { connect: { id: user.id } }
         });
 

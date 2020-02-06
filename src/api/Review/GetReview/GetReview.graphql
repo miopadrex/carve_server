@@ -1,0 +1,8 @@
+type GetReviewResponse {
+  ok: Boolean!
+  status: String
+  review: [Review!]
+}
+type Query {
+  GetReview(tattooId: String, tattooistId: String): GetReviewResponse
+}

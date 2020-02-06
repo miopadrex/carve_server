@@ -1,0 +1,14 @@
+type CreateTattooReviewResponse {
+  ok: Boolean!
+  status: String
+  review: Review!
+}
+type Mutation {
+  CreateTattooReview(
+    contents: String!
+    grade: Int!
+    images: [String!]
+    tattooId: String
+    tattooistId: String
+  ): CreateTattooReviewResponse
+}
