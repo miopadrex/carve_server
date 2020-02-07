@@ -5,8 +5,7 @@ const resolvers: Resolvers = {
     GetGuaranteeTattoos: async () => {
       try {
         const tattoos = await prisma.tattoos({
-          where: { writeUser: { guarantee: true } },
-          orderBy: "favsCount_ASC"
+          where: { writeUser: { guarantee: true } }
         });
         return {
           ok: true,

@@ -15,33 +15,43 @@ const resolvers: Resolvers = {
       const user: User = request.user;
       const { email } = args;
       const { key } = args;
-      try {
-        const verification = await prisma.verification({
-          payload: email
-        });
-        if (verification?.key === key) {
-          await prisma.updateUser({
-            where: { id: user.id },
-            data: { emailVerfied: true }
+      const authComplete = await prisma.$exists.verification({
+        payload: user.email
+      });
+      if (authComplete) {
+        try {
+          const verification = await prisma.verification({
+            payload: email
           });
-          await prisma.updateVerification({
-            where: { id: verification.id },
-            data: { verified: true }
-          });
-          return {
-            ok: true,
-            status: "이메일인증이 완료되었습니다."
-          };
-        } else {
+          if (verification?.key === key) {
+            await prisma.updateUser({
+              where: { id: user.id },
+              data: { emailVerfied: true }
+            });
+            await prisma.updateVerification({
+              where: { id: verification.id },
+              data: { verified: true }
+            });
+            return {
+              ok: true,
+              status: "이메일인증이 완료되었습니다."
+            };
+          } else {
+            return {
+              ok: false,
+              status: "인증번호가 맞지않습니다."
+            };
+          }
+        } catch (error) {
           return {
             ok: false,
-            status: "인증번호가 맞지않습니다."
+            status: error
           };
         }
-      } catch (error) {
+      } else {
         return {
           ok: false,
-          status: error
+          status: "권한이없습니다"
         };
       }
     }

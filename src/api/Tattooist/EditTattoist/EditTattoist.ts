@@ -10,20 +10,31 @@ const resolvers: Resolvers = {
     ) => {
       authTattooist(request);
       const user: User = request.user;
-      try {
-        const updateUser = await prisma.updateUser({
-          where: { id: user.id },
-          data: { ...args }
-        });
-        return {
-          ok: true,
-          status: "타투이스트 정보가 정상적으로 수정되었습니다.",
-          tattooist: updateUser
-        };
-      } catch (error) {
+      const authEdit = await prisma.$exists.user({
+        id: user.id
+      });
+      if (authEdit) {
+        try {
+          const updateUser = await prisma.updateUser({
+            where: { id: user.id },
+            data: { ...args }
+          });
+          return {
+            ok: true,
+            status: "타투이스트 정보가 정상적으로 수정되었습니다.",
+            tattooist: updateUser
+          };
+        } catch (error) {
+          return {
+            ok: false,
+            status: error,
+            tattooist: null
+          };
+        }
+      } else {
         return {
           ok: false,
-          status: error,
+          status: "권한이없습니다",
           tattooist: null
         };
       }

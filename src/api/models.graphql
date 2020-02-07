@@ -1,72 +1,22 @@
-type GetFavTattooResponse {
+type EditEstimateResponse {
   ok: Boolean!
   status: String
-  tattoo: [Tattoo!]!
-}
-
-type Query {
-  GetFavTattoo: GetFavTattooResponse
-  GetFavTattooist: GetFavTattooistResponse
-  GetReview(tattooId: String, tattooistId: String): GetReviewResponse
-  CategorySearchTattoo(term: String): CategorySearchTattooResponse
-  GetBasicTattoos: GetBasicTattoosResponse
-  GetGuaranteeTattoos: GetGuaranteeTattoosResponse
-  GetRecomendTattoos: GetRecomendTattoosResponse
-  GetTattoo(tattooId: String): GetTattooResponse
-  TextSearchTattoo(term: String): TextSearchTattooResponse
-  GetBasicTattooists: GetBasicTattooistsResponse
-  GetGuaranteeTattooists: GetGuaranteeTattooistsResponse
-  GetRecommendTattooists: GetRecommendTattooistsResponse
-  GetTattooist(tattooistId: String): GetTattooistResponse
-  TextSearchTattooist(term: String): TextSearchTattooistResponse
-  GetEmail(phoneNumber: String): GetEmailResponse!
-  GetMyProfile: User!
-}
-
-type GetFavTattooistResponse {
-  ok: Boolean!
-  status: String
-  tattooist: [User!]!
-}
-
-type Fav {
-  id: String!
-  writeUser: User!
-  tattoo: Tattoo
-  tattooist: User
-  createdAt: String
-  updatedAt: String
-}
-
-type File {
-  id: String!
-  url: String!
-  tattoo: Tattoo
-  tattooReview: Review
-  createdAt: String
-  updatedA: String
-}
-
-type Reservation {
-  id: String!
-  Status: String!
-  requestUser: User!
-  tattooist: User!
-  tatoo: Tattoo!
-  createdAt: String
-  updatedAt: String
-}
-
-type CreateTattooReviewResponse {
-  ok: Boolean!
-  status: String
-  review: Review!
+  EditEstimate: Estimate
 }
 
 type Mutation {
+  EditEstimate(estimateId: String, size: String, part: String, location: String, requirements: String, deleteId: [String!], createUrl: [String!]): EditEstimateResponse
+  RequestEstimate(images: [String!]!, size: String!, part: String!, location: String!, requirements: String): RequestEstimateResponse
+  UpdateEstimate(estimateId: String, status: StatusOption!, sgEstimateId: String): UpdateEstimateResponse
+  ToggleFav(tattooId: String, tattooistId: String): ToggleFavResponse!
+  RequestReservation(tattooId: String!, date: String, requirements: String): RequestReservationResponse!
+  UpdateReservationStatus(reservationId: String, status: StatusOption!): Reservation
   CreateTattooReview(contents: String!, grade: Int!, images: [String!], tattooId: String, tattooistId: String): CreateTattooReviewResponse
-  EditTattoo(id: String!, title: String, contents: String, price: Int, genre: String, subject: String, part: String, size: String, numberOfTask: String, workTime: String, sale: Boolean, action: ACTIONS!, deleteId: [String], createUrl: [String]): EditTattooResponse
-  UploadTattoo(title: String!, contents: String!, price: Int!, genre: String!, subject: String!, part: String!, size: String!, numberOfTask: String!, workTime: String!, sale: Boolean!, payCard: Boolean, payDivision: Boolean, images: [String!]): UploadTattooResponse!
+  EditReview(action: ACTIONS, reviewId: String, contents: String, grade: Int, deleteId: [String], createUrl: [String]): EditReviewResponse
+  EditSgEstimate(SgEstimateId: String, suggestions: String, location: String, price: String, worksTime: String): EditSgEstimateResponse
+  SuggestionEstimate(estimateId: String, suggestions: String, location: String, price: String, worksTime: String): SuggestionEstimateResponse
+  EditTattoo(id: String!, title: String, contents: String, price: String, genre: String, subject: String, part: String, size: String, numberOfTask: String, workTime: String, sale: Boolean, action: ACTIONS!, deleteId: [String], createUrl: [String]): EditTattooResponse
+  UploadTattoo(title: String!, contents: String!, price: String!, genre: String!, subject: String!, part: String!, size: String!, numberOfTask: String!, workTime: String!, sale: Boolean!, payCard: Boolean, payDivision: Boolean, images: [String!]): UploadTattooResponse!
   EditTattooist(storeName: String, location: String, parking: Boolean): EditTattooistResponse!
   ToggleTattooist: ToggleTattooistResponse
   ChangePassword(email: String, phoneNumber: String, password: String!): ChangePasswordResponse!
@@ -84,10 +34,145 @@ type Mutation {
   SignEmailVerifyComplete(email: String!, key: String!): SignEmailVerifyCompleteResponse
 }
 
+type Subscription {
+  EstimateSgSubscrpiton(estimateId: String!): SgEstimate
+  EstimateSubscription(estimateId: String!): Estimate
+  ReservationStatusSubscription(reservationId: String!): Reservation
+}
+
+type Query {
+  GetEstimate(estimateId: String): Estimate
+  GetReservation(reservationId: String): GetReservationResponse
+  GetReview(reviewId: String): GetReviewResponse
+  GetSgEstimate(esSgtimateLId: String): SgEstimate
+  CategorySearchTattoo(term: String): CategorySearchTattooResponse
+  GetBasicTattoos: GetBasicTattoosResponse
+  GetGuaranteeTattoos: GetGuaranteeTattoosResponse
+  GetRecomendTattoos: GetRecomendTattoosResponse
+  GetTattoo(tattooId: String): GetTattooResponse
+  TextSearchTattoo(term: String): TextSearchTattooResponse
+  GetBasicTattooists: GetBasicTattooistsResponse
+  GetGuaranteeTattooists: GetGuaranteeTattooistsResponse
+  GetRecommendTattooists: GetRecommendTattooistsResponse
+  GetTattooist(tattooistId: String): GetTattooistResponse
+  TextSearchTattooist(term: String): TextSearchTattooistResponse
+  GetEmail(phoneNumber: String): GetEmailResponse!
+  GetMyProfile: User!
+}
+
+type RequestEstimateResponse {
+  ok: Boolean!
+  status: String
+  esimate: Estimate
+}
+
+type UpdateEstimateResponse {
+  ok: Boolean!
+  status: String
+  estimate: Estimate
+}
+
+enum StatusOption {
+  REQUESTING
+  ACCEPTED
+  CANCELED
+  WORKING
+  FINISHED
+  REQUESTING
+  ACCEPTED
+  CANCELED
+  WORKING
+  FINISHED
+}
+
+type Estimate {
+  id: String!
+  status: String
+  images: [File!]
+  size: String
+  part: String
+  location: String
+  price: String
+  worksTime: String
+  requirements: String
+  requestUser: String
+  tattooist: User
+  sgEstimate: [Estimate!]
+  createdAt: String
+  updatedAt: String
+}
+
+type ToggleFavResponse {
+  ok: Boolean!
+  status: String
+}
+
+type Fav {
+  id: String!
+  writeUser: User!
+  tattoo: Tattoo
+  tattooist: User
+  createdAt: String
+  updatedAt: String
+}
+
+type File {
+  id: String!
+  url: String!
+  tattoo: Tattoo
+  tattooReview: Review
+  estimate: Estimate
+  createdAt: String
+  updatedA: String
+}
+
+type GetReservationResponse {
+  ok: Boolean
+  status: String
+  reservation: Reservation
+}
+
+type RequestReservationResponse {
+  ok: Boolean!
+  status: String
+  reservation: Reservation
+}
+
+type Reservation {
+  id: String!
+  status: String
+  requestUser: User!
+  tattooist: User!
+  tattoo: Tattoo!
+  date: String
+  requirements: String
+  createdAt: String
+  updatedAt: String
+}
+
+type CreateTattooReviewResponse {
+  ok: Boolean!
+  status: String
+  review: Review!
+}
+
+type EditReviewResponse {
+  ok: Boolean!
+  status: String
+  editreview: Review
+}
+
+enum ACTIONS {
+  EDIT
+  DELETE
+  EDIT
+  DELETE
+}
+
 type GetReviewResponse {
   ok: Boolean!
   status: String
-  review: [Review!]
+  review: Review
 }
 
 type Review {
@@ -102,6 +187,31 @@ type Review {
   updatedAt: String
 }
 
+type EditSgEstimateResponse {
+  ok: Boolean!
+  status: String
+  sgEstimate: SgEstimate
+}
+
+type SuggestionEstimateResponse {
+  ok: Boolean
+  status: String
+  sgEstimate: SgEstimate
+}
+
+type SgEstimate {
+  id: String!
+  estimate: Estimate
+  suggestions: String
+  location: String
+  price: String
+  worksTime: String
+  isSelect: Boolean
+  tattooist: User
+  createdAt: String
+  updatedAt: String
+}
+
 type CategorySearchTattooResponse {
   ok: Boolean!
   status: String
@@ -111,11 +221,6 @@ type CategorySearchTattooResponse {
 type EditTattooResponse {
   ok: Boolean!
   status: String
-}
-
-enum ACTIONS {
-  EDIT
-  DELETE
 }
 
 type GetBasicTattoosResponse {
@@ -158,7 +263,7 @@ type Tattoo {
   id: String!
   title: String!
   contents: String!
-  price: Int!
+  price: String!
   genre: String!
   subject: String!
   part: String!
@@ -314,8 +419,10 @@ type User {
   avatar: String
   gender: String
   age: Int
-  reservationsAsUser: Reservation
+  reservationsAsUser: [Reservation!]
   reservationAsUserCount: Int
+  estimateRequestUser: [Estimate!]
+  estimateRequestUserCount: Int
   writeFavs: [Review!]
   writeFavsCount: Int
   writeReviews: [Review!]
@@ -328,8 +435,10 @@ type User {
   parking: Boolean
   guarantee: Boolean
   recommendation: Boolean
-  reservationsAsTatooist: Reservation
+  reservationsAsTatooist: [Reservation!]
   reservationsAsTatooistCount: Int
+  tattooistEstimate: [Estimate!]
+  tattooistEstimateCount: Int
   asReviews: [Review!]
   asReviewCount: Int
   tattoos: [Tattoo!]

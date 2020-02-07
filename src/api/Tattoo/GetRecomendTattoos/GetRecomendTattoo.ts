@@ -5,8 +5,7 @@ const resolvers: Resolvers = {
     GetRecomendTattoos: async () => {
       try {
         const tattoos = await prisma.tattoos({
-          where: { writeUser: { recommendation: true } },
-          orderBy: "favsCount_ASC"
+          where: { writeUser: { recommendation: true } }
         });
         return {
           ok: true,

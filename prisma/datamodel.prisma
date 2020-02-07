@@ -14,11 +14,9 @@ type User {
   gender: String
   age: Int
   writeFavs:[Fav!]! @relation(name: "FavsOfUser" onDelete: CASCADE)
-  writeFavsCount: Int @default(value:0)
   writeReviews: [Review!]! @relation(name:"ReviewOfUser" onDelete: CASCADE) 
-  writeReviewsCount: Int @default(value:0)
-  reservationAsUserCount: Int @default(value:0)
-  reservationsAsUser: [Reservation!]! @relation(name:"ReservationAsUser")
+  reservationsAsUser: [Reservation!]! @relation(name:"ReservationAsUser" onDelete:CASCADE)
+  estimateRequestUser: [Estimate!] @relation(name:"EstimateOfUser" onDelete:CASCADE)
   rule: Role! @default(value: USER)
   isTattooist: Boolean! @default(value: false)
   storeName: String
@@ -26,14 +24,12 @@ type User {
   guarantee: Boolean @default(value:false)
   parking: Boolean @default(value:false) 
   recommendation: Boolean @default(value:false)
-  asReviewCount: Int @default(value:0)
-  favsCount: Int @default(value:0)
-  tattooCount: Int @default(value:0)
-  reservationsAsTatooistCount: Int @default(value:0)
   asReviews: [Review!]! @relation(name: "ReviewOfTattoist" onDelete: CASCADE)
-  reservationsAsTatooist: [Reservation!]! @relation(name:"ReservationAsTattooist")
+  reservationsAsTatooist: [Reservation!]! @relation(name:"ReservationAsTattooist" onDelete:CASCADE)
   tattoos: [Tattoo!]! @relation(name: "TattooOfTattooist" onDelete: CASCADE)
-  favs: [Fav!]! @relation(name: "FavsOfTattooist" onDelete: CASCADE) 
+  favs: [Fav!]! @relation(name: "FavsOfTattooist" onDelete: CASCADE)
+  tattooistEstimate: [Estimate!] @relation(name:"EstimateOfTattooist" onDelete:CASCADE)
+  sgEstimate:[SgEstimate!]  @relation(name:"SgEstimateOfTattooist" onDelete:CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -44,7 +40,7 @@ type Tattoo {
   contents: String!
   images: [File!]! @relation(name: "FileOfTattoo" onDelete: CASCADE)
   writeUser: User! @relation(name: "TattooOfTattooist")
-  price: Int!
+  price: String!
   genre: String!
   subject: String!
   part: String!
@@ -58,16 +54,13 @@ type Tattoo {
   favs: [Fav!]! @relation(name: "FavsOfTattoo" onDelete: CASCADE)
   reviews: [Review!]! @relation(name:"ReviewOfTattoo" onDelete: CASCADE) 
   reservations : [Reservation!]! @relation(name:"ReservationOfTattoo")
-  favsCount: Int @default(value:0)
-  reviewsCount: Int @default(value:0)
-  reservationCount: Int @default(value:0)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
 
 type Fav {
   id: ID! @id
-  writeUser: User @relation(name: "FavsOfUser")
+  writeUser: User! @relation(name: "FavsOfUser")
   tattoo: Tattoo @relation(name: "FavsOfTattoo")
   tattooist: User @relation(name: "FavsOfTattooist")
   createdAt: DateTime! @createdAt
@@ -91,6 +84,7 @@ type File {
   url: String!
   tattoo: Tattoo @relation(name:"FileOfTattoo") 
   tattooReview: Review @relation(name:"FileOfTattooReview")
+  estimate: Estimate @relation(name:"FileOfEstimate")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -107,14 +101,47 @@ type Verification {
 
 type Reservation {
   id: ID! @id
-  status: ReservationStatus! @default(value:REQUESTING)
-  requestUser: User @relation(name:"ReservationAsUser")
-  tattooist: User @relation(name:"ReservationAsTattooist")
-  tatoo: Tattoo @relation(name:"ReservationOfTattoo")
+  status: StatusOption! @default(value:REQUESTING)
+  requestUser: User! @relation(name:"ReservationAsUser")
+  tattooist: User! @relation(name:"ReservationAsTattooist")
+  tattoo: Tattoo! @relation(name:"ReservationOfTattoo")
+  date: String
+  requirements: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
-enum ReservationStatus {
+
+type Estimate {
+  id: ID! @id
+  status: StatusOption! @default(value:REQUESTING)
+  images: [File!]! @relation(name:"FileOfEstimate")
+  size: String
+  part: String
+  price: String
+  location: String
+  worksTime: String
+  requirements: String
+  requestUser: User! @relation(name:"EstimateOfUser")
+  tattooist: User @relation(name:"EstimateOfTattooist")
+  sgEstimate: [SgEstimate!]! @relation(name:"SgEstimateOfEstimate")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type SgEstimate {
+  id: ID! @id
+  estimate: Estimate! @relation(name:"SgEstimateOfEstimate")
+  suggestions: String
+  location: String
+  price: String
+  worksTime: String 
+  isSelect: Boolean @default(value: false)
+  tattooist: User! @relation(name:"SgEstimateOfTattooist")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+enum StatusOption {
   REQUESTING
   ACCEPTED
   CANCELED

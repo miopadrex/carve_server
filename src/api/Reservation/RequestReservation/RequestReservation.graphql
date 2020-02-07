@@ -1,0 +1,12 @@
+type RequestReservationResponse {
+  ok: Boolean!
+  status: String
+  reservation: Reservation
+}
+type Mutation {
+  RequestReservation(
+    tattooId: String!
+    date: String
+    requirements: String
+  ): RequestReservationResponse!
+}

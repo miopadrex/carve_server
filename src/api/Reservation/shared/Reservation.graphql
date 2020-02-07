@@ -1,9 +1,11 @@
 type Reservation {
   id: String!
-  Status: String!
+  status: String
   requestUser: User!
   tattooist: User!
-  tatoo: Tattoo!
+  tattoo: Tattoo!
+  date: String
+  requirements: String
   createdAt: String
   updatedAt: String
 }

@@ -1,0 +1,20 @@
+type UpdateEstimateResponse {
+  ok: Boolean!
+  status: String
+  estimate: Estimate
+}
+type Mutation {
+  UpdateEstimate(
+    estimateId: String
+    status: StatusOption!
+    sgEstimateId: String
+  ): UpdateEstimateResponse
+}
+
+enum StatusOption {
+  REQUESTING
+  ACCEPTED
+  CANCELED
+  WORKING
+  FINISHED
+}

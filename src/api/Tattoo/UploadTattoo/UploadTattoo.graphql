@@ -7,7 +7,7 @@ type Mutation {
   UploadTattoo(
     title: String!
     contents: String!
-    price: Int!
+    price: String!
     genre: String!
     subject: String!
     part: String!

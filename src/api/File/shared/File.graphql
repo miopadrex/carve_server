@@ -3,6 +3,7 @@ type File {
   url: String!
   tattoo: Tattoo
   tattooReview: Review
+  estimate: Estimate
   createdAt: String
   updatedA: String
 }

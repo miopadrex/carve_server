@@ -1,0 +1,20 @@
+type EditReviewResponse {
+  ok: Boolean!
+  status: String
+  editreview: Review
+}
+type Mutation {
+  EditReview(
+    action: ACTIONS
+    reviewId: String
+    contents: String
+    grade: Int
+    deleteId: [String]
+    createUrl: [String]
+  ): EditReviewResponse
+}
+
+enum ACTIONS {
+  EDIT
+  DELETE
+}

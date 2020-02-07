@@ -7,7 +7,7 @@ type Mutation {
     id: String!
     title: String
     contents: String
-    price: Int
+    price: String
     genre: String
     subject: String
     part: String

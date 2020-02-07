@@ -1,8 +1,0 @@
-type GetFavTattooResponse {
-  ok: Boolean!
-  status: String
-  tattoo: [Tattoo!]!
-}
-type Query {
-  GetFavTattoo: GetFavTattooResponse
-}

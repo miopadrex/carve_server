@@ -1,0 +1,8 @@
+type GetReservationResponse {
+  ok: Boolean
+  status: String
+  reservation: Reservation
+}
+type Query {
+  GetReservation(reservationId: String): GetReservationResponse
+}

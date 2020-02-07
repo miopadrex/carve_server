@@ -1,0 +1,12 @@
+type SgEstimate {
+  id: String!
+  estimate: Estimate
+  suggestions: String
+  location: String
+  price: String
+  worksTime: String
+  isSelect: Boolean
+  tattooist: User
+  createdAt: String
+  updatedAt: String
+}

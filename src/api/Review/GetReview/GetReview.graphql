@@ -1,8 +1,8 @@
 type GetReviewResponse {
   ok: Boolean!
   status: String
-  review: [Review!]
+  review: Review
 }
 type Query {
-  GetReview(tattooId: String, tattooistId: String): GetReviewResponse
+  GetReview(reviewId: String): GetReviewResponse
 }

@@ -1,15 +1,17 @@
 import aligoapi from "aligoapi";
 
 const AuthData = {
-  key: "hpz2ix2o44gs68n0mi4sdehjou6vpvsu",
-  user_id: "afterlove80"
+  key: process.env.ALIGO_KEY || "",
+  user_id: process.env.ALIGO_ID || ""
 };
 
-export const sendSms = (to: string, body: string, key: string) => {
+// 테스트모드
+// AuthData.testmode_yn = "Y";
+
+export const sendSms = async (to: string, body: string) => {
   const req = {
-    sender: "07088071028",
-    receiver: to,
-    msg: body
+    headers: ["content-type"],
+    body: { sender: "07088071028", receiver: to, msg: body }
   };
-  aligoapi.send(req, AuthData);
+  await aligoapi.send(req, AuthData);
 };

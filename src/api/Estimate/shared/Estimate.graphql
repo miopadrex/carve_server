@@ -1,0 +1,16 @@
+type Estimate {
+  id: String!
+  status: String
+  images: [File!]
+  size: String
+  part: String
+  location: String
+  price: String
+  worksTime: String
+  requirements: String
+  requestUser: String
+  tattooist: User
+  sgEstimate: [Estimate!]
+  createdAt: String
+  updatedAt: String
+}

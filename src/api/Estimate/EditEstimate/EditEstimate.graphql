@@ -1,0 +1,16 @@
+type EditEstimateResponse {
+  ok: Boolean!
+  status: String
+  EditEstimate: Estimate
+}
+type Mutation {
+  EditEstimate(
+    estimateId: String
+    size: String
+    part: String
+    location: String
+    requirements: String
+    deleteId: [String!]
+    createUrl: [String!]
+  ): EditEstimateResponse
+}

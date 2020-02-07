@@ -13,8 +13,10 @@ type User {
   avatar: String
   gender: String
   age: Int
-  reservationsAsUser: Reservation
+  reservationsAsUser: [Reservation!]
   reservationAsUserCount: Int
+  estimateRequestUser: [Estimate!]
+  estimateRequestUserCount: Int
   writeFavs: [Review!]
   writeFavsCount: Int
   writeReviews: [Review!]
@@ -27,8 +29,10 @@ type User {
   parking: Boolean
   guarantee: Boolean
   recommendation: Boolean
-  reservationsAsTatooist: Reservation
+  reservationsAsTatooist: [Reservation!]
   reservationsAsTatooistCount: Int
+  tattooistEstimate: [Estimate!]
+  tattooistEstimateCount: Int
   asReviews: [Review!]
   asReviewCount: Int
   tattoos: [Tattoo!]

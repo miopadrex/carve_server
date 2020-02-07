@@ -1,0 +1,14 @@
+type EditSgEstimateResponse {
+  ok: Boolean!
+  status: String
+  sgEstimate: SgEstimate
+}
+type Mutation {
+  EditSgEstimate(
+    SgEstimateId: String
+    suggestions: String
+    location: String
+    price: String
+    worksTime: String
+  ): EditSgEstimateResponse
+}

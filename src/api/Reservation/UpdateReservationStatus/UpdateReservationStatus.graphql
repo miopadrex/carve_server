@@ -1,0 +1,14 @@
+type Mutation {
+  UpdateReservationStatus(
+    reservationId: String
+    status: StatusOption!
+  ): Reservation
+}
+
+enum StatusOption {
+  REQUESTING
+  ACCEPTED
+  CANCELED
+  WORKING
+  FINISHED
+}

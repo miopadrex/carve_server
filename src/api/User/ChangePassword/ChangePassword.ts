@@ -13,23 +13,34 @@ const resolvers: Resolvers = {
       args: ChangePasswordMutationArgs,
       { request, isAuth }
     ): Promise<ChangePasswordResponse> => {
-      const user: User = request.user;
       isAuth(request);
-      try {
-        const password = await passwordHashed(args.password);
-        await prisma.updateUser({
-          where: { id: user.id },
-          data: { password }
-        });
-        return {
-          ok: true,
-          status: "비밀번호 변경이 완료되었습니다.",
-          token: null
-        };
-      } catch (error) {
+      const user: User = request.user;
+      const authPassword = await prisma.$exists.user({
+        id: user.id
+      });
+      if (authPassword) {
+        try {
+          const password = await passwordHashed(args.password);
+          await prisma.updateUser({
+            where: { id: user.id },
+            data: { password }
+          });
+          return {
+            ok: true,
+            status: "비밀번호 변경이 완료되었습니다.",
+            token: null
+          };
+        } catch (error) {
+          return {
+            ok: false,
+            status: error,
+            token: null
+          };
+        }
+      } else {
         return {
           ok: false,
-          status: error,
+          status: "권한이없습니다",
           token: null
         };
       }

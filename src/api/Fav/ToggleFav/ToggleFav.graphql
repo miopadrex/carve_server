@@ -1,0 +1,7 @@
+type ToggleFavResponse {
+  ok: Boolean!
+  status: String
+}
+type Mutation {
+  ToggleFav(tattooId: String, tattooistId: String): ToggleFavResponse!
+}
