@@ -6,13 +6,13 @@ type User {
   phoneVerfied: Boolean @default(value: false)
   password: String
   phoneNumber: String @unique
-  kakaoAuthId: String @unique
+  kakaoAuthId: String @unique 
   kakaoPlusId: String @unique
   instaId: String @unique
   naverAuthId: String @unique
   avatar: String @default(value: "miopadre.com")
   gender: String
-  age: Int
+  age: String
   writeFavs:[Fav!]! @relation(name: "FavsOfUser" onDelete: CASCADE)
   writeReviews: [Review!]! @relation(name:"ReviewOfUser" onDelete: CASCADE) 
   reservationsAsUser: [Reservation!]! @relation(name:"ReservationAsUser" onDelete:CASCADE)
@@ -21,6 +21,8 @@ type User {
   isTattooist: Boolean! @default(value: false)
   storeName: String
   location: String
+  locationCity: String
+  locationDetail: String
   guarantee: Boolean @default(value:false)
   parking: Boolean @default(value:false) 
   recommendation: Boolean @default(value:false)
@@ -47,9 +49,8 @@ type Tattoo {
   size: String!
   numberOfTask: String!
   workTime: String!
-  sale: Boolean! @default(value:false)
   payCard: Boolean @default(value:false) 
-  payDivision : Boolean @default(value:false) 
+  payDivision : Boolean @default(value:false)
   isFav: Boolean! @default(value:false)
   favs: [Fav!]! @relation(name: "FavsOfTattoo" onDelete: CASCADE)
   reviews: [Review!]! @relation(name:"ReviewOfTattoo" onDelete: CASCADE) 
@@ -119,6 +120,10 @@ type Estimate {
   part: String
   price: String
   location: String
+  want_Location_1_City: String
+  want_Location_1_Detail: String
+  want_Location_2_City: String
+  want_Location_2_Detail: String
   worksTime: String
   requirements: String
   requestUser: User! @relation(name:"EstimateOfUser")

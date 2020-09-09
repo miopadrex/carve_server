@@ -3,5 +3,12 @@ type ToggleTattooistResponse {
   status: String
 }
 type Mutation {
-  ToggleTattooist: ToggleTattooistResponse
+  ToggleTattooist(
+    kakaoPlusId: String
+    instaId: String
+    storeName: String
+    location: String
+    locationCity: String
+    locationDetail: String
+  ): ToggleTattooistResponse
 }

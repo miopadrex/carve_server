@@ -1,14 +1,17 @@
 type RequestEstimateResponse {
   ok: Boolean!
   status: String
-  esimate: Estimate
+  estimate: Estimate
 }
 type Mutation {
   RequestEstimate(
     images: [String!]!
     size: String!
     part: String!
-    location: String!
+    want_Location_1_City: String
+    want_Location_1_Detail: String
+    want_Location_2_City: String
+    want_Location_2_Detail: String
     requirements: String
   ): RequestEstimateResponse
 }

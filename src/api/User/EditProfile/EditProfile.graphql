@@ -7,10 +7,14 @@ type Mutation {
     email: String!
     name: String
     phoneNumber: String!
-    kakaoPlusId: String!
-    instaId: String!
     avatar: String
     gender: String
-    age: Int
+    age: String
+    storeName: String
+    location: String
+    locationCity: String
+    locationDetail: String
+    kakaoPlusId: String
+    instaId: String
   ): EditProfileResponse!
 }

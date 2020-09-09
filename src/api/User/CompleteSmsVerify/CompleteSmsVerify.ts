@@ -12,8 +12,9 @@ const resolvers: Resolvers = {
       const user: User = request.user;
       const { phoneNumber, key } = args;
       const authComplete = await prisma.$exists.verification({
-        payload: user.phoneNumber
+        payload: phoneNumber
       });
+      console.log(authComplete);
       if (authComplete) {
         try {
           const verification = await prisma.verification({

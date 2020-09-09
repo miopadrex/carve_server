@@ -2,8 +2,8 @@ import cors from "cors";
 import { GraphQLServer } from "graphql-yoga";
 import helmet from "helmet";
 import logger from "morgan";
+import { authenticateJwt } from "./passport";
 import schema from "./schema";
-import decodeJwt from "./utils/decodeJwt";
 import { uploadController, uploadMiddleware } from "./utils/upload";
 
 class App {
@@ -22,21 +22,8 @@ class App {
     this.app.express.use(cors());
     this.app.express.use(logger("dev"));
     this.app.express.use(helmet());
-    this.app.express.use(this.jwt);
     this.app.express.post("/api/upload", uploadMiddleware, uploadController);
-  };
-  // 토큰으로 유저를 컨테스트 유저로 교체
-  private jwt = async (req, res, next) => {
-    const token = await req.get("X-JWT");
-    if (token) {
-      const user = await decodeJwt(token);
-      if (user) {
-        req.user = user;
-      } else {
-        req.user = undefined;
-      }
-    }
-    next();
+    this.app.express.use(authenticateJwt);
   };
 }
 

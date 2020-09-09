@@ -1,14 +1,16 @@
-export const typeDefs = ["type EditEstimateResponse {\n  ok: Boolean!\n  status: String\n  EditEstimate: Estimate\n}\n\ntype Mutation {\n  EditEstimate(estimateId: String, size: String, part: String, location: String, requirements: String, deleteId: [String!], createUrl: [String!]): EditEstimateResponse\n  RequestEstimate(images: [String!]!, size: String!, part: String!, location: String!, requirements: String): RequestEstimateResponse\n  UpdateEstimate(estimateId: String, status: StatusOption!, sgEstimateId: String): UpdateEstimateResponse\n  ToggleFav(tattooId: String, tattooistId: String): ToggleFavResponse!\n  RequestReservation(tattooId: String!, date: String, requirements: String): RequestReservationResponse!\n  UpdateReservationStatus(reservationId: String, status: StatusOption!): Reservation\n  CreateTattooReview(contents: String!, grade: Int!, images: [String!], tattooId: String, tattooistId: String): CreateTattooReviewResponse\n  EditReview(action: ACTIONS, reviewId: String, contents: String, grade: Int, deleteId: [String], createUrl: [String]): EditReviewResponse\n  EditSgEstimate(SgEstimateId: String, suggestions: String, location: String, price: String, worksTime: String): EditSgEstimateResponse\n  SuggestionEstimate(estimateId: String, suggestions: String, location: String, price: String, worksTime: String): SuggestionEstimateResponse\n  EditTattoo(id: String!, title: String, contents: String, price: String, genre: String, subject: String, part: String, size: String, numberOfTask: String, workTime: String, sale: Boolean, action: ACTIONS!, deleteId: [String], createUrl: [String]): EditTattooResponse\n  UploadTattoo(title: String!, contents: String!, price: String!, genre: String!, subject: String!, part: String!, size: String!, numberOfTask: String!, workTime: String!, sale: Boolean!, payCard: Boolean, payDivision: Boolean, images: [String!]): UploadTattooResponse!\n  EditTattooist(storeName: String, location: String, parking: Boolean): EditTattooistResponse!\n  ToggleTattooist: ToggleTattooistResponse\n  ChangePassword(email: String, phoneNumber: String, password: String!): ChangePasswordResponse!\n  ChangePasswordConfirm(password: String): ChangePasswordConfirmResponse!\n  CompleteSmsVerify(phoneNumber: String!, key: String!): CompleteSmsVerifyResponse\n  EditProfile(email: String!, name: String, phoneNumber: String!, kakaoPlusId: String!, instaId: String!, avatar: String, gender: String, age: Int): EditProfileResponse!\n  EmailSignIn(email: String!, password: String!): EmailSignInResponse!\n  EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoPlusId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!\n  KaKaoLogin(kakaoAuthId: String!, name: String, email: String, gender: String, avatar: String): KaKaoLoginResponse!\n  NaverLogin(naverAuthId: String!, name: String, email: String, avatar: String, gender: String): NaverLoginResponse!\n  RequestLoginEmailVerify(email: String): RequestLoginEmailVerifyResponse!\n  RequestPasswordResetEmailVerify(email: String): RequestPasswordResetEmailVerifyResponse!\n  RequestSmsVerify(phoneNumber: String!): RequestSmsVerifyResponse\n  ResetEmailVerifyComplete(email: String, key: String): ResetEmailVerifyCompleteResponse\n  SignEmailVerifyComplete(email: String!, key: String!): SignEmailVerifyCompleteResponse\n}\n\ntype Subscription {\n  EstimateSgSubscrpiton(estimateId: String!): SgEstimate\n  EstimateSubscription(estimateId: String!): Estimate\n  ReservationStatusSubscription(reservationId: String!): Reservation\n}\n\ntype Query {\n  GetEstimate(estimateId: String): Estimate\n  GetReservation(reservationId: String): GetReservationResponse\n  GetReview(reviewId: String): GetReviewResponse\n  GetSgEstimate(esSgtimateLId: String): SgEstimate\n  CategorySearchTattoo(term: String): CategorySearchTattooResponse\n  GetBasicTattoos: GetBasicTattoosResponse\n  GetGuaranteeTattoos: GetGuaranteeTattoosResponse\n  GetRecomendTattoos: GetRecomendTattoosResponse\n  GetTattoo(tattooId: String): GetTattooResponse\n  TextSearchTattoo(term: String): TextSearchTattooResponse\n  GetBasicTattooists: GetBasicTattooistsResponse\n  GetGuaranteeTattooists: GetGuaranteeTattooistsResponse\n  GetRecommendTattooists: GetRecommendTattooistsResponse\n  GetTattooist(tattooistId: String): GetTattooistResponse\n  TextSearchTattooist(term: String): TextSearchTattooistResponse\n  GetEmail(phoneNumber: String): GetEmailResponse!\n  GetMyProfile: User!\n}\n\ntype RequestEstimateResponse {\n  ok: Boolean!\n  status: String\n  esimate: Estimate\n}\n\ntype UpdateEstimateResponse {\n  ok: Boolean!\n  status: String\n  estimate: Estimate\n}\n\nenum StatusOption {\n  REQUESTING\n  ACCEPTED\n  CANCELED\n  WORKING\n  FINISHED\n  REQUESTING\n  ACCEPTED\n  CANCELED\n  WORKING\n  FINISHED\n}\n\ntype Estimate {\n  id: String!\n  status: String\n  images: [File!]\n  size: String\n  part: String\n  location: String\n  price: String\n  worksTime: String\n  requirements: String\n  requestUser: String\n  tattooist: User\n  sgEstimate: [Estimate!]\n  createdAt: String\n  updatedAt: String\n}\n\ntype ToggleFavResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype Fav {\n  id: String!\n  writeUser: User!\n  tattoo: Tattoo\n  tattooist: User\n  createdAt: String\n  updatedAt: String\n}\n\ntype File {\n  id: String!\n  url: String!\n  tattoo: Tattoo\n  tattooReview: Review\n  estimate: Estimate\n  createdAt: String\n  updatedA: String\n}\n\ntype GetReservationResponse {\n  ok: Boolean\n  status: String\n  reservation: Reservation\n}\n\ntype RequestReservationResponse {\n  ok: Boolean!\n  status: String\n  reservation: Reservation\n}\n\ntype Reservation {\n  id: String!\n  status: String\n  requestUser: User!\n  tattooist: User!\n  tattoo: Tattoo!\n  date: String\n  requirements: String\n  createdAt: String\n  updatedAt: String\n}\n\ntype CreateTattooReviewResponse {\n  ok: Boolean!\n  status: String\n  review: Review!\n}\n\ntype EditReviewResponse {\n  ok: Boolean!\n  status: String\n  editreview: Review\n}\n\nenum ACTIONS {\n  EDIT\n  DELETE\n  EDIT\n  DELETE\n}\n\ntype GetReviewResponse {\n  ok: Boolean!\n  status: String\n  review: Review\n}\n\ntype Review {\n  id: String!\n  contents: String!\n  grade: Int!\n  images: [File!]\n  writeUser: User!\n  tattoo: Tattoo\n  tattooist: User\n  createdAt: String\n  updatedAt: String\n}\n\ntype EditSgEstimateResponse {\n  ok: Boolean!\n  status: String\n  sgEstimate: SgEstimate\n}\n\ntype SuggestionEstimateResponse {\n  ok: Boolean\n  status: String\n  sgEstimate: SgEstimate\n}\n\ntype SgEstimate {\n  id: String!\n  estimate: Estimate\n  suggestions: String\n  location: String\n  price: String\n  worksTime: String\n  isSelect: Boolean\n  tattooist: User\n  createdAt: String\n  updatedAt: String\n}\n\ntype CategorySearchTattooResponse {\n  ok: Boolean!\n  status: String\n  tattoos: [Tattoo!]\n}\n\ntype EditTattooResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype GetBasicTattoosResponse {\n  ok: Boolean!\n  status: String\n  tattoo: [Tattoo!]\n}\n\ntype GetGuaranteeTattoosResponse {\n  ok: Boolean!\n  status: String\n  tattoo: [Tattoo!]\n}\n\ntype GetRecomendTattoosResponse {\n  ok: Boolean!\n  status: String\n  tattoo: [Tattoo!]\n}\n\ntype GetTattooResponse {\n  ok: Boolean!\n  status: String\n  tattoo: Tattoo\n}\n\ntype TextSearchTattooResponse {\n  ok: Boolean!\n  status: String\n  tattoos: [Tattoo!]\n}\n\ntype UploadTattooResponse {\n  ok: Boolean!\n  status: String\n  tattoo: Tattoo\n}\n\ntype Tattoo {\n  id: String!\n  title: String!\n  contents: String!\n  price: String!\n  genre: String!\n  subject: String!\n  part: String!\n  size: String!\n  numberOfTask: String!\n  workTime: String!\n  sale: Boolean!\n  isFav: Boolean!\n  favsCount: Int\n  images: [File]\n  payCard: Boolean\n  payDivision: Boolean\n  writeUser: User!\n  favs: [Fav!]\n  reviews: [Review!]\n  reviewsCount: Int\n  reservations: [Reservation!]\n  reservationCount: Int\n  createdAt: String\n  updatedAt: String\n}\n\ntype EditTattooistResponse {\n  ok: Boolean!\n  status: String\n  tattooist: User\n}\n\ntype GetBasicTattooistsResponse {\n  ok: Boolean!\n  status: String\n  tattooists: [User!]\n}\n\ntype GetGuaranteeTattooistsResponse {\n  ok: Boolean!\n  status: String\n  tattooists: [User!]\n}\n\ntype GetRecommendTattooistsResponse {\n  ok: Boolean!\n  status: String\n  tattooists: [User!]\n}\n\ntype GetTattooistResponse {\n  ok: Boolean!\n  status: String\n  tattooist: User\n}\n\ntype TextSearchTattooistResponse {\n  ok: Boolean!\n  status: String\n  tattooist: [User!]\n}\n\ntype ToggleTattooistResponse {\n  ok: Boolean\n  status: String\n}\n\ntype ChangePasswordResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype ChangePasswordConfirmResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype CompleteSmsVerifyResponse {\n  ok: Boolean\n  status: String\n}\n\ntype EditProfileResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype EmailSignInResponse {\n  ok: Boolean!\n  status: String!\n  token: String\n}\n\ntype EmailSignUpResponse {\n  ok: Boolean!\n  status: String!\n  token: String\n}\n\ntype GetEmailResponse {\n  ok: Boolean\n  status: String\n  email: String\n}\n\ntype KaKaoLoginResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype NaverLoginResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype RequestLoginEmailVerifyResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype RequestPasswordResetEmailVerifyResponse {\n  ok: Boolean\n  status: String\n}\n\ntype RequestSmsVerifyResponse {\n  ok: Boolean\n  status: String\n}\n\ntype ResetEmailVerifyCompleteResponse {\n  ok: Boolean\n  status: String\n  token: String\n}\n\ntype SignEmailVerifyCompleteResponse {\n  ok: Boolean!\n  status: String!\n}\n\ntype User {\n  id: String!\n  name: String!\n  email: String!\n  password: String\n  phoneNumber: String!\n  phoneVerfied: Boolean\n  emailVerfied: Boolean\n  kakaoAuthId: String\n  kakaoPlusId: String\n  naverAuthId: String\n  instaId: String\n  avatar: String\n  gender: String\n  age: Int\n  reservationsAsUser: [Reservation!]\n  reservationAsUserCount: Int\n  estimateRequestUser: [Estimate!]\n  estimateRequestUserCount: Int\n  writeFavs: [Review!]\n  writeFavsCount: Int\n  writeReviews: [Review!]\n  writeReviewsCount: Int\n  rule: String\n  isTattooist: Boolean!\n  isFav: Boolean!\n  storeName: String\n  location: String\n  parking: Boolean\n  guarantee: Boolean\n  recommendation: Boolean\n  reservationsAsTatooist: [Reservation!]\n  reservationsAsTatooistCount: Int\n  tattooistEstimate: [Estimate!]\n  tattooistEstimateCount: Int\n  asReviews: [Review!]\n  asReviewCount: Int\n  tattoos: [Tattoo!]\n  tattooCount: Int\n  favs: [Fav!]\n  favsCount: Int!\n  createdAt: String\n  updatedAt: String\n}\n\ntype Verification {\n  id: String!\n  target: String!\n  payload: String!\n  key: String!\n  verified: Boolean!\n  createdAt: String\n  updatedAt: String\n}\n"];
+export const typeDefs = ["type EditEstimateResponse {\n  ok: Boolean!\n  status: String\n  EditEstimate: Estimate\n}\n\ntype Mutation {\n  EditEstimate(estimateId: String, size: String, part: String, want_Location_1_City: String, want_Location_1_Detail: String, want_Location_2_City: String, want_Location_2_Detail: String, requirements: String, deleteId: [String!], createUrl: [String!]): EditEstimateResponse\n  RequestEstimate(images: [String!]!, size: String!, part: String!, want_Location_1_City: String, want_Location_1_Detail: String, want_Location_2_City: String, want_Location_2_Detail: String, requirements: String): RequestEstimateResponse\n  SearchEstimate(term: String!): [Estimate!]\n  UpdateEstimate(estimateId: String, status: StatusOption!, sgEstimateId: String): UpdateEstimateResponse\n  ToggleFav(tattooId: String, tattooistId: String): ToggleFavResponse!\n  RequestReservation(tattooId: String!, date: String, requirements: String): RequestReservationResponse!\n  UpdateReservationStatus(reservationId: String, status: StatusOption!): Reservation\n  CreateTattooReview(contents: String!, grade: Int!, images: [String!], tattooId: String, tattooistId: String): CreateTattooReviewResponse\n  EditReview(action: ACTIONS, reviewId: String, contents: String, grade: Int, deleteId: [String], createUrl: [String]): EditReviewResponse\n  EditSgEstimate(SgEstimateId: String, suggestions: String, location: String, price: String, worksTime: String): EditSgEstimateResponse\n  SuggestionEstimate(estimateId: String, suggestions: String, location: String, price: String, worksTime: String): SuggestionEstimateResponse\n  EditTattoo(id: String!, title: String, contents: String, price: String, genre: String, subject: String, part: String, size: String, numberOfTask: String, workTime: String, action: String!, deleteId: [String], createUrl: [String]): EditTattooResponse\n  UploadTattoo(title: String!, contents: String!, price: String!, genre: String!, subject: String!, part: String!, size: String!, numberOfTask: String!, workTime: String!, payCard: Boolean, payDivision: Boolean, images: [String!]): UploadTattooResponse!\n  EditTattooist(storeName: String, location: String, parking: Boolean): EditTattooistResponse!\n  ToggleTattooist(kakaoPlusId: String, instaId: String, storeName: String, location: String, locationCity: String, locationDetail: String): ToggleTattooistResponse\n  ChangePassword(email: String, phoneNumber: String, password: String!): ChangePasswordResponse!\n  ChangePasswordConfirm(password: String): ChangePasswordConfirmResponse!\n  CompleteSmsVerify(phoneNumber: String!, key: String!): CompleteSmsVerifyResponse\n  EditProfile(email: String!, name: String, phoneNumber: String!, avatar: String, gender: String, age: String, storeName: String, location: String, locationCity: String, locationDetail: String, kakaoPlusId: String, instaId: String): EditProfileResponse!\n  EditTattooistProfile(phoneNumber: String, storeName: String, location: String, locationCity: String, locationDetail: String, kakaoPlusId: String, instaId: String): EditTattooistProfileResponse!\n  EmailSignIn(email: String!, password: String!): EmailSignInResponse!\n  EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoPlusId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!\n  KaKaoLogin(kakaoAuthId: String!, name: String, email: String, emailVerfied: Boolean, avatar: String, phoneNumber: String): KaKaoLoginResponse!\n  NaverLogin(naverAuthId: String!, name: String, email: String, avatar: String, gender: String): NaverLoginResponse!\n  RequestLoginEmailVerify(email: String): RequestLoginEmailVerifyResponse!\n  RequestPasswordResetEmailVerify(email: String): RequestPasswordResetEmailVerifyResponse!\n  RequestSmsVerify(phoneNumber: String!): RequestSmsVerifyResponse\n  ResetEmailVerifyComplete(email: String, key: String): ResetEmailVerifyCompleteResponse\n  SignEmailVerifyComplete(email: String!, key: String!): SignEmailVerifyCompleteResponse\n  SocialSignUp(kakaoAuthId: String!, name: String, email: String, avatar: String, emailVerfied: Boolean, phoneNumber: String, gender: String): SocialSignUpRespones\n}\n\ntype Subscription {\n  EstimateSgSubscrpiton(estimateId: String!): SgEstimate\n  EstimateSubscription(estimateId: String!): Estimate\n  ReservationStatusSubscription(reservationId: String!): Reservation\n}\n\ntype Query {\n  GetEstimate(estimateId: String): Estimate\n  GetMyEstimateList: [Estimate!]\n  GetReservation(reservationId: String): GetReservationResponse\n  GetReview(reviewId: String): GetReviewResponse\n  GetSgEstimate(esSgtimateLId: String): SgEstimate\n  CategorySearchTattoo(term: String): CategorySearchTattooResponse\n  GetBasicTattoos: GetBasicTattoosResponse\n  GetGuaranteeTattoos: GetGuaranteeTattoosResponse\n  GetMyTattoo(pageNumber: Int!, items: Int!): [Tattoo!]\n  GetRecomendTattoos: GetRecomendTattoosResponse\n  GetTattoo(tattooId: String): GetTattooResponse\n  TextSearchTattoo(term: String): TextSearchTattooResponse\n  GetBasicTattooists: GetBasicTattooistsResponse\n  GetGuaranteeTattooists: GetGuaranteeTattooistsResponse\n  GetRecommendTattooists: GetRecommendTattooistsResponse\n  GetTattooist(tattooistId: String): GetTattooistResponse\n  TextSearchTattooist(term: String): TextSearchTattooistResponse\n  GetEmail(phoneNumber: String): GetEmailResponse!\n  GetMyProfile: User!\n}\n\ntype RequestEstimateResponse {\n  ok: Boolean!\n  status: String\n  estimate: Estimate\n}\n\ntype UpdateEstimateResponse {\n  ok: Boolean!\n  status: String\n  estimate: Estimate\n}\n\nenum StatusOption {\n  REQUESTING\n  ACCEPTED\n  CANCELED\n  WORKING\n  FINISHED\n  REQUESTING\n  ACCEPTED\n  CANCELED\n  WORKING\n  FINISHED\n}\n\ntype Estimate {\n  id: String!\n  status: String\n  images: [File!]\n  size: String\n  part: String\n  location: String\n  want_Location_1_City: String\n  want_Location_1_Detail: String\n  want_Location_2_City: String\n  want_Location_2_Detail: String\n  price: String\n  worksTime: String\n  requirements: String\n  requestUser: User\n  tattooist: User\n  sgEstimate: [SgEstimate!]\n  createdAt: String\n  updatedAt: String\n}\n\ntype ToggleFavResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype Fav {\n  id: String!\n  writeUser: User!\n  tattoo: Tattoo\n  tattooist: User\n  createdAt: String\n  updatedAt: String\n}\n\ntype File {\n  id: String!\n  url: String!\n  tattoo: Tattoo\n  tattooReview: Review\n  estimate: Estimate\n  createdAt: String\n  updatedA: String\n}\n\ntype GetReservationResponse {\n  ok: Boolean\n  status: String\n  reservation: Reservation\n}\n\ntype RequestReservationResponse {\n  ok: Boolean!\n  status: String\n  reservation: Reservation\n}\n\ntype Reservation {\n  id: String!\n  status: String\n  requestUser: User!\n  tattooist: User!\n  tattoo: Tattoo!\n  date: String\n  requirements: String\n  createdAt: String\n  updatedAt: String\n}\n\ntype CreateTattooReviewResponse {\n  ok: Boolean!\n  status: String\n  review: Review!\n}\n\ntype EditReviewResponse {\n  ok: Boolean!\n  status: String\n  editreview: Review\n}\n\nenum ACTIONS {\n  EDIT\n  DELETE\n}\n\ntype GetReviewResponse {\n  ok: Boolean!\n  status: String\n  review: Review\n}\n\ntype Review {\n  id: String!\n  contents: String!\n  grade: Int!\n  images: [File!]\n  writeUser: User!\n  tattoo: Tattoo\n  tattooist: User\n  createdAt: String\n  updatedAt: String\n}\n\ntype EditSgEstimateResponse {\n  ok: Boolean!\n  status: String\n  sgEstimate: SgEstimate\n}\n\ntype SuggestionEstimateResponse {\n  ok: Boolean\n  status: String\n  sgEstimate: SgEstimate\n}\n\ntype SgEstimate {\n  id: String!\n  estimate: Estimate\n  suggestions: String\n  location: String\n  price: String\n  worksTime: String\n  isSelect: Boolean\n  tattooist: User\n  createdAt: String\n  updatedAt: String\n}\n\ntype CategorySearchTattooResponse {\n  ok: Boolean!\n  status: String\n  tattoos: [Tattoo!]\n}\n\ntype EditTattooResponse {\n  ok: Boolean!\n  status: String\n  tattoo: Tattoo\n}\n\ntype GetBasicTattoosResponse {\n  ok: Boolean!\n  status: String\n  tattoo: [Tattoo!]\n}\n\ntype GetGuaranteeTattoosResponse {\n  ok: Boolean!\n  status: String\n  tattoo: [Tattoo!]\n}\n\ntype GetRecomendTattoosResponse {\n  ok: Boolean!\n  status: String\n  tattoo: [Tattoo!]\n}\n\ntype GetTattooResponse {\n  ok: Boolean!\n  status: String\n  tattoo: Tattoo\n}\n\ntype TextSearchTattooResponse {\n  ok: Boolean!\n  status: String\n  tattoos: [Tattoo!]\n}\n\ntype UploadTattooResponse {\n  ok: Boolean!\n  status: String\n  tattoo: Tattoo\n}\n\ntype Tattoo {\n  id: String!\n  title: String!\n  contents: String!\n  price: String!\n  genre: String!\n  subject: String!\n  part: String!\n  size: String!\n  numberOfTask: String!\n  workTime: String!\n  isFav: Boolean!\n  favsCount: Int\n  images: [File]\n  payCard: Boolean\n  payDivision: Boolean\n  writeUser: User!\n  favs: [Fav!]\n  reviews: [Review!]\n  reviewsCount: Int\n  reservations: [Reservation!]\n  reservationCount: Int\n  createdAt: String\n  updatedAt: String\n}\n\ntype EditTattooistResponse {\n  ok: Boolean!\n  status: String\n  tattooist: User\n}\n\ntype GetBasicTattooistsResponse {\n  ok: Boolean!\n  status: String\n  tattooists: [User!]\n}\n\ntype GetGuaranteeTattooistsResponse {\n  ok: Boolean!\n  status: String\n  tattooists: [User!]\n}\n\ntype GetRecommendTattooistsResponse {\n  ok: Boolean!\n  status: String\n  tattooists: [User!]\n}\n\ntype GetTattooistResponse {\n  ok: Boolean!\n  status: String\n  tattooist: User\n}\n\ntype TextSearchTattooistResponse {\n  ok: Boolean!\n  status: String\n  tattooist: [User!]\n}\n\ntype ToggleTattooistResponse {\n  ok: Boolean\n  status: String\n}\n\ntype ChangePasswordResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype ChangePasswordConfirmResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype CompleteSmsVerifyResponse {\n  ok: Boolean\n  status: String\n}\n\ntype EditProfileResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype EditTattooistProfileResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype EmailSignInResponse {\n  ok: Boolean!\n  status: String!\n  token: String\n}\n\ntype EmailSignUpResponse {\n  ok: Boolean!\n  status: String!\n  token: String\n}\n\ntype GetEmailResponse {\n  ok: Boolean\n  status: String\n  email: String\n}\n\ntype KaKaoLoginResponse {\n  ok: Boolean!\n  status: String\n  token: String\n  user: User\n}\n\ntype NaverLoginResponse {\n  ok: Boolean!\n  status: String\n  token: String\n}\n\ntype RequestLoginEmailVerifyResponse {\n  ok: Boolean!\n  status: String\n}\n\ntype RequestPasswordResetEmailVerifyResponse {\n  ok: Boolean\n  status: String\n}\n\ntype RequestSmsVerifyResponse {\n  ok: Boolean\n  status: String\n}\n\ntype ResetEmailVerifyCompleteResponse {\n  ok: Boolean\n  status: String\n  token: String\n}\n\ntype SignEmailVerifyCompleteResponse {\n  ok: Boolean!\n  status: String!\n}\n\ntype SocialSignUpRespones {\n  ok: Boolean\n  status: String\n  token: String\n  user: User\n}\n\ntype User {\n  id: String!\n  name: String!\n  email: String!\n  password: String\n  phoneNumber: String!\n  phoneVerfied: Boolean\n  emailVerfied: Boolean\n  kakaoAuthId: String!\n  kakaoPlusId: String\n  naverAuthId: String\n  instaId: String\n  avatar: String\n  gender: String\n  age: String\n  reservationsAsUser: [Reservation!]\n  reservationAsUserCount: Int\n  estimateRequestUser: [Estimate!]\n  estimateRequestUserCount: Int\n  writeFavs: [Review!]\n  writeFavsCount: Int\n  writeReviews: [Review!]\n  writeReviewsCount: Int\n  rule: String\n  isTattooist: Boolean!\n  isFav: Boolean!\n  storeName: String\n  location: String\n  locationCity: String\n  locationDetail: String\n  parking: Boolean\n  guarantee: Boolean\n  recommendation: Boolean\n  reservationsAsTatooist: [Reservation!]\n  reservationsAsTatooistCount: Int\n  tattooistEstimate: [Estimate!]\n  tattooistEstimateCount: Int\n  asReviews: [Review!]\n  asReviewCount: Int\n  tattoos: [Tattoo!]\n  tattooCount: Int\n  favs: [Fav!]\n  favsCount: Int!\n  createdAt: String\n  updatedAt: String\n}\n\ntype Verification {\n  id: String!\n  target: String!\n  payload: String!\n  key: String!\n  verified: Boolean!\n  createdAt: String\n  updatedAt: String\n}\n"];
 /* tslint:disable */
 
 export interface Query {
   GetEstimate: Estimate | null;
+  GetMyEstimateList: Array<Estimate>;
   GetReservation: GetReservationResponse | null;
   GetReview: GetReviewResponse | null;
   GetSgEstimate: SgEstimate | null;
   CategorySearchTattoo: CategorySearchTattooResponse | null;
   GetBasicTattoos: GetBasicTattoosResponse | null;
   GetGuaranteeTattoos: GetGuaranteeTattoosResponse | null;
+  GetMyTattoo: Array<Tattoo>;
   GetRecomendTattoos: GetRecomendTattoosResponse | null;
   GetTattoo: GetTattooResponse | null;
   TextSearchTattoo: TextSearchTattooResponse | null;
@@ -41,6 +43,11 @@ export interface CategorySearchTattooQueryArgs {
   term: string | null;
 }
 
+export interface GetMyTattooQueryArgs {
+  pageNumber: number;
+  items: number;
+}
+
 export interface GetTattooQueryArgs {
   tattooId: string | null;
 }
@@ -68,12 +75,16 @@ export interface Estimate {
   size: string | null;
   part: string | null;
   location: string | null;
+  want_Location_1_City: string | null;
+  want_Location_1_Detail: string | null;
+  want_Location_2_City: string | null;
+  want_Location_2_Detail: string | null;
   price: string | null;
   worksTime: string | null;
   requirements: string | null;
-  requestUser: string | null;
+  requestUser: User | null;
   tattooist: User | null;
-  sgEstimate: Array<Estimate>;
+  sgEstimate: Array<SgEstimate>;
   createdAt: string | null;
   updatedAt: string | null;
 }
@@ -99,7 +110,6 @@ export interface Tattoo {
   size: string;
   numberOfTask: string;
   workTime: string;
-  sale: boolean;
   isFav: boolean;
   favsCount: number | null;
   images: Array<File> | null;
@@ -123,13 +133,13 @@ export interface User {
   phoneNumber: string;
   phoneVerfied: boolean | null;
   emailVerfied: boolean | null;
-  kakaoAuthId: string | null;
+  kakaoAuthId: string;
   kakaoPlusId: string | null;
   naverAuthId: string | null;
   instaId: string | null;
   avatar: string | null;
   gender: string | null;
-  age: number | null;
+  age: string | null;
   reservationsAsUser: Array<Reservation>;
   reservationAsUserCount: number | null;
   estimateRequestUser: Array<Estimate>;
@@ -143,6 +153,8 @@ export interface User {
   isFav: boolean;
   storeName: string | null;
   location: string | null;
+  locationCity: string | null;
+  locationDetail: string | null;
   parking: boolean | null;
   guarantee: boolean | null;
   recommendation: boolean | null;
@@ -193,18 +205,6 @@ export interface Fav {
   updatedAt: string | null;
 }
 
-export interface GetReservationResponse {
-  ok: boolean | null;
-  status: string | null;
-  reservation: Reservation | null;
-}
-
-export interface GetReviewResponse {
-  ok: boolean;
-  status: string | null;
-  review: Review | null;
-}
-
 export interface SgEstimate {
   id: string;
   estimate: Estimate | null;
@@ -216,6 +216,18 @@ export interface SgEstimate {
   tattooist: User | null;
   createdAt: string | null;
   updatedAt: string | null;
+}
+
+export interface GetReservationResponse {
+  ok: boolean | null;
+  status: string | null;
+  reservation: Reservation | null;
+}
+
+export interface GetReviewResponse {
+  ok: boolean;
+  status: string | null;
+  review: Review | null;
 }
 
 export interface CategorySearchTattooResponse {
@@ -293,6 +305,7 @@ export interface GetEmailResponse {
 export interface Mutation {
   EditEstimate: EditEstimateResponse | null;
   RequestEstimate: RequestEstimateResponse | null;
+  SearchEstimate: Array<Estimate>;
   UpdateEstimate: UpdateEstimateResponse | null;
   ToggleFav: ToggleFavResponse;
   RequestReservation: RequestReservationResponse;
@@ -309,6 +322,7 @@ export interface Mutation {
   ChangePasswordConfirm: ChangePasswordConfirmResponse;
   CompleteSmsVerify: CompleteSmsVerifyResponse | null;
   EditProfile: EditProfileResponse;
+  EditTattooistProfile: EditTattooistProfileResponse;
   EmailSignIn: EmailSignInResponse;
   EmailSignUp: EmailSignUpResponse;
   KaKaoLogin: KaKaoLoginResponse;
@@ -318,13 +332,17 @@ export interface Mutation {
   RequestSmsVerify: RequestSmsVerifyResponse | null;
   ResetEmailVerifyComplete: ResetEmailVerifyCompleteResponse | null;
   SignEmailVerifyComplete: SignEmailVerifyCompleteResponse | null;
+  SocialSignUp: SocialSignUpRespones | null;
 }
 
 export interface EditEstimateMutationArgs {
   estimateId: string | null;
   size: string | null;
   part: string | null;
-  location: string | null;
+  want_Location_1_City: string | null;
+  want_Location_1_Detail: string | null;
+  want_Location_2_City: string | null;
+  want_Location_2_Detail: string | null;
   requirements: string | null;
   deleteId: Array<string>;
   createUrl: Array<string>;
@@ -334,8 +352,15 @@ export interface RequestEstimateMutationArgs {
   images: Array<string>;
   size: string;
   part: string;
-  location: string;
+  want_Location_1_City: string | null;
+  want_Location_1_Detail: string | null;
+  want_Location_2_City: string | null;
+  want_Location_2_Detail: string | null;
   requirements: string | null;
+}
+
+export interface SearchEstimateMutationArgs {
+  term: string;
 }
 
 export interface UpdateEstimateMutationArgs {
@@ -404,8 +429,7 @@ export interface EditTattooMutationArgs {
   size: string | null;
   numberOfTask: string | null;
   workTime: string | null;
-  sale: boolean | null;
-  action: ACTIONS;
+  action: string;
   deleteId: Array<string> | null;
   createUrl: Array<string> | null;
 }
@@ -420,7 +444,6 @@ export interface UploadTattooMutationArgs {
   size: string;
   numberOfTask: string;
   workTime: string;
-  sale: boolean;
   payCard: boolean | null;
   payDivision: boolean | null;
   images: Array<string>;
@@ -430,6 +453,15 @@ export interface EditTattooistMutationArgs {
   storeName: string | null;
   location: string | null;
   parking: boolean | null;
+}
+
+export interface ToggleTattooistMutationArgs {
+  kakaoPlusId: string | null;
+  instaId: string | null;
+  storeName: string | null;
+  location: string | null;
+  locationCity: string | null;
+  locationDetail: string | null;
 }
 
 export interface ChangePasswordMutationArgs {
@@ -451,11 +483,25 @@ export interface EditProfileMutationArgs {
   email: string;
   name: string | null;
   phoneNumber: string;
-  kakaoPlusId: string;
-  instaId: string;
   avatar: string | null;
   gender: string | null;
-  age: number | null;
+  age: string | null;
+  storeName: string | null;
+  location: string | null;
+  locationCity: string | null;
+  locationDetail: string | null;
+  kakaoPlusId: string | null;
+  instaId: string | null;
+}
+
+export interface EditTattooistProfileMutationArgs {
+  phoneNumber: string | null;
+  storeName: string | null;
+  location: string | null;
+  locationCity: string | null;
+  locationDetail: string | null;
+  kakaoPlusId: string | null;
+  instaId: string | null;
 }
 
 export interface EmailSignInMutationArgs {
@@ -480,8 +526,9 @@ export interface KaKaoLoginMutationArgs {
   kakaoAuthId: string;
   name: string | null;
   email: string | null;
-  gender: string | null;
+  emailVerfied: boolean | null;
   avatar: string | null;
+  phoneNumber: string | null;
 }
 
 export interface NaverLoginMutationArgs {
@@ -514,6 +561,16 @@ export interface SignEmailVerifyCompleteMutationArgs {
   key: string;
 }
 
+export interface SocialSignUpMutationArgs {
+  kakaoAuthId: string;
+  name: string | null;
+  email: string | null;
+  avatar: string | null;
+  emailVerfied: boolean | null;
+  phoneNumber: string | null;
+  gender: string | null;
+}
+
 export interface EditEstimateResponse {
   ok: boolean;
   status: string | null;
@@ -523,7 +580,7 @@ export interface EditEstimateResponse {
 export interface RequestEstimateResponse {
   ok: boolean;
   status: string | null;
-  esimate: Estimate | null;
+  estimate: Estimate | null;
 }
 
 export type StatusOption = "REQUESTING" | "ACCEPTED" | "CANCELED" | "WORKING" | "FINISHED";
@@ -574,6 +631,7 @@ export interface SuggestionEstimateResponse {
 export interface EditTattooResponse {
   ok: boolean;
   status: string | null;
+  tattoo: Tattoo | null;
 }
 
 export interface UploadTattooResponse {
@@ -614,6 +672,11 @@ export interface EditProfileResponse {
   status: string | null;
 }
 
+export interface EditTattooistProfileResponse {
+  ok: boolean;
+  status: string | null;
+}
+
 export interface EmailSignInResponse {
   ok: boolean;
   status: string;
@@ -630,6 +693,7 @@ export interface KaKaoLoginResponse {
   ok: boolean;
   status: string | null;
   token: string | null;
+  user: User | null;
 }
 
 export interface NaverLoginResponse {
@@ -662,6 +726,13 @@ export interface ResetEmailVerifyCompleteResponse {
 export interface SignEmailVerifyCompleteResponse {
   ok: boolean;
   status: string;
+}
+
+export interface SocialSignUpRespones {
+  ok: boolean | null;
+  status: string | null;
+  token: string | null;
+  user: User | null;
 }
 
 export interface Subscription {

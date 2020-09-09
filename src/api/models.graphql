@@ -5,8 +5,9 @@ type EditEstimateResponse {
 }
 
 type Mutation {
-  EditEstimate(estimateId: String, size: String, part: String, location: String, requirements: String, deleteId: [String!], createUrl: [String!]): EditEstimateResponse
-  RequestEstimate(images: [String!]!, size: String!, part: String!, location: String!, requirements: String): RequestEstimateResponse
+  EditEstimate(estimateId: String, size: String, part: String, want_Location_1_City: String, want_Location_1_Detail: String, want_Location_2_City: String, want_Location_2_Detail: String, requirements: String, deleteId: [String!], createUrl: [String!]): EditEstimateResponse
+  RequestEstimate(images: [String!]!, size: String!, part: String!, want_Location_1_City: String, want_Location_1_Detail: String, want_Location_2_City: String, want_Location_2_Detail: String, requirements: String): RequestEstimateResponse
+  SearchEstimate(term: String!): [Estimate!]
   UpdateEstimate(estimateId: String, status: StatusOption!, sgEstimateId: String): UpdateEstimateResponse
   ToggleFav(tattooId: String, tattooistId: String): ToggleFavResponse!
   RequestReservation(tattooId: String!, date: String, requirements: String): RequestReservationResponse!
@@ -15,23 +16,25 @@ type Mutation {
   EditReview(action: ACTIONS, reviewId: String, contents: String, grade: Int, deleteId: [String], createUrl: [String]): EditReviewResponse
   EditSgEstimate(SgEstimateId: String, suggestions: String, location: String, price: String, worksTime: String): EditSgEstimateResponse
   SuggestionEstimate(estimateId: String, suggestions: String, location: String, price: String, worksTime: String): SuggestionEstimateResponse
-  EditTattoo(id: String!, title: String, contents: String, price: String, genre: String, subject: String, part: String, size: String, numberOfTask: String, workTime: String, sale: Boolean, action: ACTIONS!, deleteId: [String], createUrl: [String]): EditTattooResponse
-  UploadTattoo(title: String!, contents: String!, price: String!, genre: String!, subject: String!, part: String!, size: String!, numberOfTask: String!, workTime: String!, sale: Boolean!, payCard: Boolean, payDivision: Boolean, images: [String!]): UploadTattooResponse!
+  EditTattoo(id: String!, title: String, contents: String, price: String, genre: String, subject: String, part: String, size: String, numberOfTask: String, workTime: String, action: String!, deleteId: [String], createUrl: [String]): EditTattooResponse
+  UploadTattoo(title: String!, contents: String!, price: String!, genre: String!, subject: String!, part: String!, size: String!, numberOfTask: String!, workTime: String!, payCard: Boolean, payDivision: Boolean, images: [String!]): UploadTattooResponse!
   EditTattooist(storeName: String, location: String, parking: Boolean): EditTattooistResponse!
-  ToggleTattooist: ToggleTattooistResponse
+  ToggleTattooist(kakaoPlusId: String, instaId: String, storeName: String, location: String, locationCity: String, locationDetail: String): ToggleTattooistResponse
   ChangePassword(email: String, phoneNumber: String, password: String!): ChangePasswordResponse!
   ChangePasswordConfirm(password: String): ChangePasswordConfirmResponse!
   CompleteSmsVerify(phoneNumber: String!, key: String!): CompleteSmsVerifyResponse
-  EditProfile(email: String!, name: String, phoneNumber: String!, kakaoPlusId: String!, instaId: String!, avatar: String, gender: String, age: Int): EditProfileResponse!
+  EditProfile(email: String!, name: String, phoneNumber: String!, avatar: String, gender: String, age: String, storeName: String, location: String, locationCity: String, locationDetail: String, kakaoPlusId: String, instaId: String): EditProfileResponse!
+  EditTattooistProfile(phoneNumber: String, storeName: String, location: String, locationCity: String, locationDetail: String, kakaoPlusId: String, instaId: String): EditTattooistProfileResponse!
   EmailSignIn(email: String!, password: String!): EmailSignInResponse!
   EmailSignUp(name: String!, email: String!, password: String!, phoneNumber: String, kakaoPlusId: String, instaId: String, avatar: String, gender: String, age: Int, isTatooist: Boolean): EmailSignUpResponse!
-  KaKaoLogin(kakaoAuthId: String!, name: String, email: String, gender: String, avatar: String): KaKaoLoginResponse!
+  KaKaoLogin(kakaoAuthId: String!, name: String, email: String, emailVerfied: Boolean, avatar: String, phoneNumber: String): KaKaoLoginResponse!
   NaverLogin(naverAuthId: String!, name: String, email: String, avatar: String, gender: String): NaverLoginResponse!
   RequestLoginEmailVerify(email: String): RequestLoginEmailVerifyResponse!
   RequestPasswordResetEmailVerify(email: String): RequestPasswordResetEmailVerifyResponse!
   RequestSmsVerify(phoneNumber: String!): RequestSmsVerifyResponse
   ResetEmailVerifyComplete(email: String, key: String): ResetEmailVerifyCompleteResponse
   SignEmailVerifyComplete(email: String!, key: String!): SignEmailVerifyCompleteResponse
+  SocialSignUp(kakaoAuthId: String!, name: String, email: String, avatar: String, emailVerfied: Boolean, phoneNumber: String, gender: String): SocialSignUpRespones
 }
 
 type Subscription {
@@ -42,12 +45,14 @@ type Subscription {
 
 type Query {
   GetEstimate(estimateId: String): Estimate
+  GetMyEstimateList: [Estimate!]
   GetReservation(reservationId: String): GetReservationResponse
   GetReview(reviewId: String): GetReviewResponse
   GetSgEstimate(esSgtimateLId: String): SgEstimate
   CategorySearchTattoo(term: String): CategorySearchTattooResponse
   GetBasicTattoos: GetBasicTattoosResponse
   GetGuaranteeTattoos: GetGuaranteeTattoosResponse
+  GetMyTattoo(pageNumber: Int!, items: Int!): [Tattoo!]
   GetRecomendTattoos: GetRecomendTattoosResponse
   GetTattoo(tattooId: String): GetTattooResponse
   TextSearchTattoo(term: String): TextSearchTattooResponse
@@ -63,7 +68,7 @@ type Query {
 type RequestEstimateResponse {
   ok: Boolean!
   status: String
-  esimate: Estimate
+  estimate: Estimate
 }
 
 type UpdateEstimateResponse {
@@ -92,12 +97,16 @@ type Estimate {
   size: String
   part: String
   location: String
+  want_Location_1_City: String
+  want_Location_1_Detail: String
+  want_Location_2_City: String
+  want_Location_2_Detail: String
   price: String
   worksTime: String
   requirements: String
-  requestUser: String
+  requestUser: User
   tattooist: User
-  sgEstimate: [Estimate!]
+  sgEstimate: [SgEstimate!]
   createdAt: String
   updatedAt: String
 }
@@ -165,8 +174,6 @@ type EditReviewResponse {
 enum ACTIONS {
   EDIT
   DELETE
-  EDIT
-  DELETE
 }
 
 type GetReviewResponse {
@@ -221,6 +228,7 @@ type CategorySearchTattooResponse {
 type EditTattooResponse {
   ok: Boolean!
   status: String
+  tattoo: Tattoo
 }
 
 type GetBasicTattoosResponse {
@@ -270,7 +278,6 @@ type Tattoo {
   size: String!
   numberOfTask: String!
   workTime: String!
-  sale: Boolean!
   isFav: Boolean!
   favsCount: Int
   images: [File]
@@ -348,6 +355,11 @@ type EditProfileResponse {
   status: String
 }
 
+type EditTattooistProfileResponse {
+  ok: Boolean!
+  status: String
+}
+
 type EmailSignInResponse {
   ok: Boolean!
   status: String!
@@ -370,6 +382,7 @@ type KaKaoLoginResponse {
   ok: Boolean!
   status: String
   token: String
+  user: User
 }
 
 type NaverLoginResponse {
@@ -404,6 +417,13 @@ type SignEmailVerifyCompleteResponse {
   status: String!
 }
 
+type SocialSignUpRespones {
+  ok: Boolean
+  status: String
+  token: String
+  user: User
+}
+
 type User {
   id: String!
   name: String!
@@ -412,13 +432,13 @@ type User {
   phoneNumber: String!
   phoneVerfied: Boolean
   emailVerfied: Boolean
-  kakaoAuthId: String
+  kakaoAuthId: String!
   kakaoPlusId: String
   naverAuthId: String
   instaId: String
   avatar: String
   gender: String
-  age: Int
+  age: String
   reservationsAsUser: [Reservation!]
   reservationAsUserCount: Int
   estimateRequestUser: [Estimate!]
@@ -432,6 +452,8 @@ type User {
   isFav: Boolean!
   storeName: String
   location: String
+  locationCity: String
+  locationDetail: String
   parking: Boolean
   guarantee: Boolean
   recommendation: Boolean

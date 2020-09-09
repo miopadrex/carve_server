@@ -9,14 +9,26 @@ const resolvers: Resolvers = {
       { request, isAuth }
     ) => {
       isAuth(request);
-      const { images, size, part, requirements } = args;
+      const {
+        images,
+        size,
+        part,
+        requirements,
+        want_Location_1_City,
+        want_Location_1_Detail,
+        want_Location_2_City,
+        want_Location_2_Detail
+      } = args;
       const user: User = request.user;
-      console.log(part);
       try {
         const newRequestEstimate = await prisma.createEstimate({
           size,
           part,
           requirements,
+          want_Location_1_City,
+          want_Location_1_Detail,
+          want_Location_2_City,
+          want_Location_2_Detail,
           requestUser: { connect: { id: user.id } }
         });
         images.forEach(async image => {

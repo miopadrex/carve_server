@@ -2,6 +2,7 @@ type KaKaoLoginResponse {
   ok: Boolean!
   status: String
   token: String
+  user: User
 }
 
 type Mutation {
@@ -9,7 +10,8 @@ type Mutation {
     kakaoAuthId: String!
     name: String
     email: String
-    gender: String
+    emailVerfied: Boolean
     avatar: String
+    phoneNumber: String
   ): KaKaoLoginResponse!
 }

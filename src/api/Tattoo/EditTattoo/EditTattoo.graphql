@@ -1,6 +1,7 @@
 type EditTattooResponse {
   ok: Boolean!
   status: String
+  tattoo: Tattoo
 }
 type Mutation {
   EditTattoo(
@@ -14,14 +15,8 @@ type Mutation {
     size: String
     numberOfTask: String
     workTime: String
-    sale: Boolean
-    action: ACTIONS!
+    action: String!
     deleteId: [String]
     createUrl: [String]
   ): EditTattooResponse
-}
-
-enum ACTIONS {
-  EDIT
-  DELETE
 }

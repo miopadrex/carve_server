@@ -1,8 +1,5 @@
 import { prisma, User } from "../../../generated/prisma-client";
-import {
-  EditTattooMutationArgs,
-  EditTattooResponse
-} from "../../../types/graph";
+import { EditTattooMutationArgs } from "../../../types/graph";
 import { Resolvers } from "../../../types/resolvers";
 
 const resolvers: Resolvers = {
@@ -11,7 +8,7 @@ const resolvers: Resolvers = {
       _,
       args: EditTattooMutationArgs,
       { request, authTattooist }
-    ): Promise<EditTattooResponse> => {
+    ) => {
       authTattooist(request);
       const {
         id,
@@ -24,7 +21,6 @@ const resolvers: Resolvers = {
         size,
         numberOfTask,
         workTime,
-        sale,
         action,
         createUrl,
         deleteId
@@ -47,7 +43,7 @@ const resolvers: Resolvers = {
                 tattoo: { connect: { id: tattoo?.id } }
               });
             });
-            await prisma.updateTattoo({
+            const updatedTattoo = await prisma.updateTattoo({
               data: {
                 title,
                 contents,
@@ -57,37 +53,41 @@ const resolvers: Resolvers = {
                 part,
                 size,
                 numberOfTask,
-                workTime,
-                sale
+                workTime
               },
               where: { id }
             });
             return {
               ok: true,
-              status: "게시물 수정이 완료 되었습니다."
+              status: "게시물 수정이 완료 되었습니다.",
+              tattoo: updatedTattoo
             };
           } else if (action === "DELETE") {
             await prisma.deleteTattoo({ id });
             return {
               ok: true,
-              status: "게시물 삭제가 완료되었습니다"
+              status: "게시물 삭제가 완료되었습니다",
+              tattoo: null
             };
           } else {
             return {
               ok: false,
-              status: "게시물에 대한 액션을 선택해주세요."
+              status: "게시물에 대한 액션을 선택해주세요.",
+              tattoo: null
             };
           }
         } else {
           return {
             ok: false,
-            status: "게시물 수정권한이 없습니다."
+            status: "게시물 수정권한이 없습니다.",
+            tattoo: null
           };
         }
       } catch (error) {
         return {
           ok: false,
-          status: error
+          status: error,
+          tattoo: null
         };
       }
     }

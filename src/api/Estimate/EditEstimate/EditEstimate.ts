@@ -14,7 +14,18 @@ const resolvers: Resolvers = {
       const authEdit = await prisma.$exists.estimate({
         requestUser: { id: user.id }
       });
-      const { estimateId, size, part, location, deleteId, createUrl } = args;
+      const {
+        estimateId,
+        size,
+        part,
+        requirements,
+        want_Location_1_City,
+        want_Location_1_Detail,
+        want_Location_2_City,
+        want_Location_2_Detail,
+        deleteId,
+        createUrl
+      } = args;
       if (authEdit) {
         try {
           deleteId.forEach(async id => await prisma.deleteFile({ id }));
@@ -27,7 +38,15 @@ const resolvers: Resolvers = {
           );
           const editEstimate = await prisma.updateEstimate({
             where: { id: estimateId },
-            data: { size, part, location }
+            data: {
+              size,
+              part,
+              requirements,
+              want_Location_1_City,
+              want_Location_1_Detail,
+              want_Location_2_City,
+              want_Location_2_Detail
+            }
           });
           return {
             ok: true,

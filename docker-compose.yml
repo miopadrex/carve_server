@@ -12,7 +12,7 @@ services:
           default:
             connector: postgres
             host: host.docker.internal
-            database: ${WETATOO_DB}
+            database: ${CARVE_DB}
             schema: public
             user: igeunman
             password: ${DB_KEY}

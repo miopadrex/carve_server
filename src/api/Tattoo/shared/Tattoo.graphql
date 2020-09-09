@@ -9,7 +9,6 @@ type Tattoo {
   size: String!
   numberOfTask: String!
   workTime: String!
-  sale: Boolean!
   isFav: Boolean!
   favsCount: Int
   images: [File]

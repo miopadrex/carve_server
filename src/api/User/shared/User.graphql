@@ -6,13 +6,13 @@ type User {
   phoneNumber: String!
   phoneVerfied: Boolean
   emailVerfied: Boolean
-  kakaoAuthId: String
+  kakaoAuthId: String!
   kakaoPlusId: String
   naverAuthId: String
   instaId: String
   avatar: String
   gender: String
-  age: Int
+  age: String
   reservationsAsUser: [Reservation!]
   reservationAsUserCount: Int
   estimateRequestUser: [Estimate!]
@@ -26,6 +26,8 @@ type User {
   isFav: Boolean!
   storeName: String
   location: String
+  locationCity: String
+  locationDetail: String
   parking: Boolean
   guarantee: Boolean
   recommendation: Boolean

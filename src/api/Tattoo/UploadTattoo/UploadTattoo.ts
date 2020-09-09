@@ -20,7 +20,6 @@ const resolvers: Resolvers = {
         size,
         numberOfTask,
         workTime,
-        sale,
         images,
         payCard,
         payDivision
@@ -36,7 +35,6 @@ const resolvers: Resolvers = {
           size,
           numberOfTask,
           workTime,
-          sale,
           payCard,
           payDivision,
           writeUser: { connect: { id: user.id } }

@@ -1,61 +1,69 @@
 import { prisma } from "../../../generated/prisma-client";
-import {
-  KaKaoLoginMutationArgs,
-  KaKaoLoginResponse
-} from "../../../types/graph";
+import { KaKaoLoginMutationArgs } from "../../../types/graph";
 import { Resolvers } from "../../../types/resolvers";
 import createJwt from "../../../utils/createJwt";
 
 const resolvers: Resolvers = {
   Mutation: {
-    KaKaoLogin: async (
-      _,
-      args: KaKaoLoginMutationArgs
-    ): Promise<KaKaoLoginResponse> => {
-      const { email, kakaoAuthId, name, avatar, gender } = args;
+    KaKaoLogin: async (_, args: KaKaoLoginMutationArgs) => {
+      const { email, kakaoAuthId, name, emailVerfied, phoneNumber } = args;
       const kakaoExtingUser = await prisma.user({ kakaoAuthId });
       const exmail = await prisma.user({ email });
-      const oldAuth = await prisma.user({ email }).naverAuthId();
+      const oldAuth = await prisma.user({ email }).kakaoAuthId();
       try {
         if (kakaoExtingUser) {
           if (oldAuth === kakaoAuthId || oldAuth === null) {
             const token = createJwt(kakaoExtingUser.id);
-            await prisma.updateUser({
+            const updateUser = await prisma.updateUser({
               where: { kakaoAuthId },
-              data: { email, name, avatar, gender }
+              data: {
+                kakaoAuthId,
+                name,
+                email,
+                emailVerfied,
+                phoneNumber
+              }
             });
             return {
               ok: true,
               status: "카카오 로그인이 성공적으로 완료되었습니다.",
-              token
+              token,
+              user: updateUser
             };
           } else {
             return {
               ok: false,
               status:
                 "이메일로 가입된 계정이있습니다. 다른이메일을 사용하시거나 이메일 로그인을 이용하세요",
-              token: null
+              token: null,
+              user: null
             };
           }
         } else {
           if (exmail) {
             const token = createJwt(exmail.id);
-            await prisma.updateUser({
+            const updateUser = await prisma.updateUser({
               where: { email },
-              data: { name, avatar, gender, kakaoAuthId }
+              data: {
+                kakaoAuthId,
+                name,
+                email,
+                emailVerfied,
+                phoneNumber
+              }
             });
             return {
               ok: true,
               status: "카카오 로그인이 성공적으로 완료되었습니다.",
-              token
+              token,
+              user: updateUser
             };
           } else {
-            const newUser = await prisma.createUser({ ...args });
-            const token = createJwt(newUser.id);
             return {
               ok: true,
-              status: "카카오 가입이 성공적으로 완료되었습니다",
-              token
+              status: "회원가입페이지로 이동합니다",
+              token: null,
+              user: null
             };
           }
         }
