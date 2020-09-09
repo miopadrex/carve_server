@@ -1,0 +1,15 @@
+type EditTattooistProfileResponse {
+  ok: Boolean!
+  status: String
+}
+type Mutation {
+  EditTattooistProfile(
+    phoneNumber: String
+    storeName: String
+    location: String
+    locationCity: String
+    locationDetail: String
+    kakaoPlusId: String
+    instaId: String
+  ): EditTattooistProfileResponse!
+}

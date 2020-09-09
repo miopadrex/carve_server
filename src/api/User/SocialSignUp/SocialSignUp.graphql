@@ -1,0 +1,18 @@
+type SocialSignUpRespones {
+  ok: Boolean
+  status: String
+  token: String
+  user: User
+}
+
+type Mutation {
+  SocialSignUp(
+    kakaoAuthId: String!
+    name: String
+    email: String
+    avatar: String
+    emailVerfied: Boolean
+    phoneNumber: String
+    gender: String
+  ): SocialSignUpRespones
+}
