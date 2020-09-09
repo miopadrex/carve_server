@@ -31,7 +31,7 @@
     "aligoapi": "^1.0.7",
     "aws-sdk": "^2.611.0",
     "babel-runtime": "^6.26.0",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "content-type": "^1.0.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
